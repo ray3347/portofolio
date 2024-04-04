@@ -56,7 +56,7 @@ const Canvas3D = forwardRef<IControlRef, IPageProps>((props, ref) => {
   const [initPath, setInitPath] = useState("");
   const [currPath, setCurrPath] = useState("/");
   const theme = useTheme();
-  const isMd = useMediaQuery(theme.breakpoints.down("md"))
+  const isMd = useMediaQuery(theme.breakpoints.down("md"));
 
   const Model = (modelProps: IModelProps) => {
     // dev
@@ -64,7 +64,7 @@ const Canvas3D = forwardRef<IControlRef, IPageProps>((props, ref) => {
 
     // prod
     const { nodes }: any = useGLTF(`/compressed.glb`);
-    
+
     // const snap = useSnapshot(state);
     const [hovered, setHovered] = useState(false);
     useCursor(hovered);
@@ -208,18 +208,16 @@ const Canvas3D = forwardRef<IControlRef, IPageProps>((props, ref) => {
           // }
         } else {
           // cameraControlsRef.current?.rotateTo(0,0, true)
-          if(initPath !== ""){
+          if (initPath !== "") {
             cameraControlsRef.current?.setLookAt(x, y, z, 0, 0, 0, true);
-            if(isMd){
-  
+            if (isMd) {
               cameraControlsRef.current?.zoomTo(0.5, true);
-            }else{
-  
+            } else {
               cameraControlsRef.current?.zoomTo(1, true);
             }
             cameraControlsRef.current.rotate(0, 0, true);
           }
-         
+
           // setAutoRotateEnabled(true);
         }
       }, [x, y, z]);
@@ -257,8 +255,8 @@ const Canvas3D = forwardRef<IControlRef, IPageProps>((props, ref) => {
       useFrame(() => {
         if (cameraControlsRef.current) {
           if (name === null) {
-            if (meshRef.current) {              
-              setCameraRotation(cameraRotation+0.005);
+            if (meshRef.current) {
+              setCameraRotation(cameraRotation + 0.005);
               meshRef.current.rotation.y -= 0.005;
             }
             // const rotateX = cameraRotation + 0.05;
@@ -276,7 +274,7 @@ const Canvas3D = forwardRef<IControlRef, IPageProps>((props, ref) => {
       // useEffect(()=>{
       //   if (cameraControlsRef.current) {
       //     if (name === null) {
-      //       // if (meshRef.current) {              
+      //       // if (meshRef.current) {
       //       //   setCameraRotation(cameraRotation+0.01);
       //       //   meshRef.current.rotation.y -= 0.01;
       //       // }
@@ -305,9 +303,11 @@ const Canvas3D = forwardRef<IControlRef, IPageProps>((props, ref) => {
 
           <Suspense fallback={null}>
             <group position={[0, 0, 0]} ref={meshRef}>
-              {objects.filter(x=>x.url).map((obj: IModelProps) => (
-                <>
+              {objects
+                .filter((x) => x.url)
+                .map((obj: IModelProps) => (
                   <Model
+                    key={obj.name}
                     name={obj.name}
                     color={obj.color}
                     position={obj.position}
@@ -326,8 +326,7 @@ const Canvas3D = forwardRef<IControlRef, IPageProps>((props, ref) => {
                       }
                     }}
                   />
-                </>
-              ))}
+                ))}
               <ContactShadows
                 rotation-x={Math.PI / 2}
                 position={[0, -35, 0]}

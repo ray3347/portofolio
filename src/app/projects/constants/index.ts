@@ -1,4 +1,5 @@
 import { gridTypes } from "@/constants";
+import { IProjects } from "../interfaces";
 
 export const typeList = [
     {
@@ -13,7 +14,7 @@ export const typeList = [
     }
   ];
 
-export const projectList = [
+export const projectList: IProjects[] = [
     {
         title: "greenmate",
         desc: "GreenMate",

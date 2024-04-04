@@ -68,8 +68,9 @@ function Projects() {
             gap: "10px",
           }}
         >
-          {typeList.map((obj) => (
+          {typeList.map((obj, idx: number) => (
             <GridButtons
+              key={obj.name}
               image={obj.icon}
               title={obj.name}
               desc={obj.desc}
@@ -92,6 +93,7 @@ function Projects() {
         >
           {projectList.map((obj) => (
             <GridButtons
+              key={obj.title}
               image={obj.icon}
               title={obj.title}
               desc={obj.desc}
