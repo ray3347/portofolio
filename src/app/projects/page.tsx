@@ -9,30 +9,31 @@ import Canvas3D from "@/components/canvas";
 import BackButton from "@/components/back-button";
 import Layout from "@/components/layout";
 import { Button, Card, Paper, Typography } from "@mui/material";
+import GridButtons from "@/components/grid-buttons";
+import GridContent from "@/components/grid-content";
+import { projectList, typeList } from "./constants";
+import { gridTypes } from "@/constants";
+import { useProjects } from "@/utilities";
 
 gsap.registerPlugin(useGSAP);
 function Projects() {
   const appRef: any = useRef();
   const childRef: any = useRef();
 
-  // other hooks
-  const { contextSafe } = useGSAP({ scope: appRef });
+  //state
+  const [viewMode, setViewMode] = useState<string | null>(gridTypes.grid);
 
-  const changePos = contextSafe((back: boolean) => {
-    if (!back) {
-      gsap.to(".canvas3d", { left: 0, ease: "power1.inOut" });
-    } else {
-      gsap.to(".canvas3d", { left: -700, ease: "power1.inOut" });
-    }
-  });
+  // other hooks
+  const { active, activate } = useProjects();
 
   return (
     <div
       style={{
+        width: "100%",
         display: "flex",
         alignItems: "start",
         justifyContent: "center",
-        flexDirection: "column"
+        flexDirection: "column",
       }}
     >
       <div
@@ -42,14 +43,67 @@ function Projects() {
       >
         <Typography
           sx={{
-            fontSize: "40px",
+            fontSize: "2vw",
             fontWeight: "bold",
           }}
         >
           PROJECTS
         </Typography>
       </div>
-      <Typography>
+      <div
+        style={{
+          width: "100%",
+          display: "flex",
+          flexDirection: "column",
+          gap: "15px",
+        }}
+      >
+        <div
+          style={{
+            width: "100%",
+            display: "flex",
+            justifyContent: "end",
+            alignItems: "center",
+            flexDirection: "row",
+            gap: "10px",
+          }}
+        >
+          {typeList.map((obj) => (
+            <GridButtons
+              image={obj.icon}
+              title={obj.name}
+              desc={obj.desc}
+              isLarge={false}
+              activeComponent={viewMode}
+              setActive={setViewMode}
+            />
+          ))}
+        </div>
+        <div
+          style={{
+            width: "100%",
+            display: "flex",
+            justifyContent: "start",
+            flexWrap: "wrap",
+            alignItems: "center",
+            flexDirection: "row",
+            gap: "15px",
+          }}
+        >
+          {projectList.map((obj) => (
+            <GridButtons
+              image={obj.icon}
+              title={obj.title}
+              desc={obj.desc}
+              isLarge={true}
+              activeComponent={active}
+              setActive={activate}
+            />
+          ))}
+        </div>
+      </div>
+      {/* <GridContent/> */}
+      {/* <Typography>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc sapien
         est, bibendum et tellus quis, iaculis efficitur nulla. Morbi facilisis
         feugiat lectus sagittis pharetra. Mauris finibus nulla et ligula rutrum
@@ -58,7 +112,7 @@ function Projects() {
         convallis, vel porttitor lacus venenatis. Cras non massa ultricies velit
         sollicitudin vestibulum quis in eros. Pellentesque luctus nulla blandit
         eros molestie porttitor.
-      </Typography>
+      </Typography> */}
     </div>
   );
 }

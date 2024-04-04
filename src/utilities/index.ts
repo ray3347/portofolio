@@ -1,4 +1,5 @@
-import { ICanvasCameraAction, ICanvasCameraState, IMouseMove, IMousePosition } from "@/interfaces";
+import { gridTypes } from "@/constants";
+import { ICanvasCameraAction, ICanvasCameraState, IGridAction, IGridState, IMouseMove, IMousePosition } from "@/interfaces";
 import { create } from "zustand";
 
 export const useMousePosition = create<IMousePosition & IMouseMove>()((set)=>({
@@ -28,6 +29,17 @@ export const useCanvasCamera = create<ICanvasCameraState & ICanvasCameraAction>(
     })),
     zoom: (isZoom) => set(()=>({
         isZoom: isZoom
+    }))
+}))
+
+export const useProjects =  create<IGridState & IGridAction>()((set)=>({
+    active: null,
+    mode: gridTypes.grid,
+    activate: (active)=> set(()=>({
+        active: active
+    })),
+    switchMode: (mode)=> set(()=>({
+        mode: mode
     }))
 }))
 

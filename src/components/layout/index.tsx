@@ -26,7 +26,7 @@ function Layout(props: ILayoutProps) {
   const { contextSafe } = useGSAP({ scope: appRef });
   const pathname = usePathname();
   const router = useRouter();
-  const { name, look } = useCanvasCamera();
+  const { name, look, x, y, z } = useCanvasCamera();
   const theme = useTheme();
   const isMd = useMediaQuery(theme.breakpoints.down("md"));
 
@@ -40,37 +40,63 @@ function Layout(props: ILayoutProps) {
   });
 
   useEffect(() => {
-    gsap.to(pageRef.current, {
-      height: "0vh",
-      opacity: "0%",
-      duration: 0.0001,
-      boxShadow:
-        "none",
-    });
-    gsap.to(contentRef.current, {
-      opacity: "0%",
-      duration: 0.0001,
-    });
+    if (pageRef.current && contentRef.current) {
+      gsap.to(pageRef.current, {
+        height: "0vh",
+        opacity: "0%",
+        duration: 0.0001,
+        boxShadow: "none",
+        transform: "none",
+      });
+      gsap.to(contentRef.current, {
+        opacity: "0%",
+        duration: 0.0001,
+      });
 
-    if (name !== pathname) {
-      console.log("BABI");
-      const tl = gsap.timeline();
-      gsap.to(pageRef.current, { opacity: "100%", duration: 1.5 });
-      tl.to(pageRef.current, {
-        height: "70vh",
-        ease: "expo.inOut",
-        duration: 1,
-      })
-        .to(contentRef.current, {
-          opacity: "100%",
+      if (name !== pathname) {
+        const tl = gsap.timeline();
+        gsap.to(pageRef.current, { opacity: "100%", duration: 1.5 });
+        tl.to(pageRef.current, {
+          height: "70vh",
+          ease: "expo.inOut",
+          duration: 1,
         })
-        .to(pageRef.current, {
-          boxShadow:
-            "8px 8px 0 rgba(255, 255, 255, 1), 16px 16px 0 rgba(255, 138, 0, 1), 24px 24px 0 rgba(229, 46, 113, 1)",
-          duration: 0.3,
-        });
+          .to(contentRef.current, {
+            opacity: "100%",
+          })
+          .to(pageRef.current, {
+            boxShadow:
+              "8px 8px 0 rgba(255, 255, 255, 1), 16px 16px 0 rgba(255, 138, 0, 1), 24px 24px 0 rgba(229, 46, 113, 1)",
+            transform: "translate(-24px,-24px)",
+            duration: 0.3,
+          });
+      }
     }
   }, [pathname]);
+
+  useEffect(() => {
+    if (pathname != "/" && name !== pathname) {
+      // look(x, y, z, null);
+      if (pageRef.current && contentRef.current) {
+        const tl = gsap.timeline();
+        gsap.to(pageRef.current, { opacity: "100%", duration: 1.5 });
+        tl.to(pageRef.current, {
+          height: "70vh",
+          ease: "expo.inOut",
+          duration: 1,
+        })
+          .to(contentRef.current, {
+            opacity: "100%",
+          })
+          .to(pageRef.current, {
+            boxShadow:
+              "8px 8px 0 rgba(255, 255, 255, 1), 16px 16px 0 rgba(255, 138, 0, 1), 24px 24px 0 rgba(229, 46, 113, 1)",
+            transform: "translate(-24px,-24px)",
+            duration: 0.3,
+          });
+      }
+    }
+  }, [pageRef.current || contentRef.current]);
 
   return (
     <div
@@ -82,6 +108,7 @@ function Layout(props: ILayoutProps) {
         fontSize: "calc(10px + 2vmin)",
         color: "white",
         cursor: isMd ? "default" : "none",
+        // pointerEvents: "none",
         zIndex: "auto",
       }}
     >
@@ -114,40 +141,44 @@ function Layout(props: ILayoutProps) {
           ref={childRef}
         />
       </div>
-      <main style={pathname === "/" ? styles.beforeStyle : styles.afterStyle}>
-        {pathname === "/" ? (
-          <>{props.children}</>
-        ) : (
-          <div
-            className="paper"
-            ref={pageRef}
-            // elevation={24}
-            style={{
-              position: "absolute",
-              padding: "2vw",
-              width: "40vw",
-              height: "0vh",
-              opacity: "0%",
-              // bottom: 0,
-              display: "flex",
-              margin: "auto",
-              // zIndex: 10,
-              backgroundColor: "black",
-              borderRadius: 20,
-              border: "solid 5px rgba(255, 0, 255, 1)",
-            }}
-          >
+      <Suspense>
+        <main style={pathname === "/" ? styles.beforeStyle : styles.afterStyle}>
+          {pathname === "/" ? (
+            <>{props.children}</>
+          ) : (
             <div
-              ref={contentRef}
+              className="paper"
+              ref={pageRef}
+              // elevation={24}
               style={{
+                position: "absolute",
+                padding: "2vw",
+                width: "40vw",
+                height: "0vh",
                 opacity: "0%",
+                // bottom: 0,
+                display: "flex",
+                margin: "auto",
+                // zIndex: 10,
+                backgroundColor: "black",
+                borderRadius: 20,
+                border: "solid 5px rgba(255, 0, 255, 1)",
               }}
             >
-              {props.children}
+              <div
+                ref={contentRef}
+                style={{
+                  opacity: "0%",
+                  width: "100%",
+                }}
+              >
+                {props.children}
+              </div>
             </div>
-          </div>
-        )}
-      </main>
+          )}
+        </main>
+      </Suspense>
+
       {/* <main
         style={{
           maxWidth: "100%",
@@ -162,24 +193,25 @@ function Layout(props: ILayoutProps) {
       >
         {props.children}
       </main> */}
-      <div style={{
-        bottom: 0,
-        width: "100%",
-        zIndex: 99,
-        height: "5%",
-        backgroundColor: "#0C090A",
-        position: "fixed",
-        textAlign: "center",
-        fontSize: "12px",
-        color: "rgba(255,255,255,0.5)",
-        paddingTop: "1vh",
-        paddingBottom: "1vh",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center"
-      }}>
-
-        <p >&copy; {new Date().getFullYear()} - Anselmus Raynard Halim</p>
+      <div
+        style={{
+          bottom: 0,
+          width: "100%",
+          zIndex: 99,
+          height: "5%",
+          backgroundColor: "#0C090A",
+          position: "fixed",
+          textAlign: "center",
+          fontSize: "12px",
+          color: "rgba(255,255,255,0.5)",
+          paddingTop: "1vh",
+          paddingBottom: "1vh",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <p>&copy; {new Date().getFullYear()} - Anselmus Raynard Halim</p>
       </div>
     </div>
   );

@@ -208,15 +208,18 @@ const Canvas3D = forwardRef<IControlRef, IPageProps>((props, ref) => {
           // }
         } else {
           // cameraControlsRef.current?.rotateTo(0,0, true)
-          cameraControlsRef.current?.setLookAt(x, y, z, 0, 0, 0, true);
-          if(isMd){
-
-            cameraControlsRef.current?.zoomTo(0.5, true);
-          }else{
-
-            cameraControlsRef.current?.zoomTo(1, true);
+          if(initPath !== ""){
+            cameraControlsRef.current?.setLookAt(x, y, z, 0, 0, 0, true);
+            if(isMd){
+  
+              cameraControlsRef.current?.zoomTo(0.5, true);
+            }else{
+  
+              cameraControlsRef.current?.zoomTo(1, true);
+            }
+            cameraControlsRef.current.rotate(0, 0, true);
           }
-          cameraControlsRef.current.rotate(0, 0, true);
+         
           // setAutoRotateEnabled(true);
         }
       }, [x, y, z]);

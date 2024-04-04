@@ -6,25 +6,7 @@ import { useMousePosition } from "@/utilities";
 import _ from "lodash";
 
 function Cursor() {
-  // const [cur, setCur] = useState({
-  //   x: 0,
-  //   y: 0,
-  // });
-  // const [isHover, setHover] = useState(false);
-
   const { x, y, isHover, mov, hovCheck } = useMousePosition();
-
-  // const cursorVariants = {
-  //   default: {
-  //     x: cur.x,
-  //     y: cur.y,
-  //   },
-  //   hover: {
-  //     x: cur.x,
-  //     y: cur.y,
-  //     padding: 15,
-  //   },
-  // };
 
   useEffect(() => {
     const mouseMove = (e: any) => {
@@ -48,8 +30,8 @@ function Cursor() {
             border: "solid 2px white",
             padding: isHover ? 30 : 10,
             position: "fixed",
-            top: `${y}px`,
-            left: `${x}px`,
+            top: `${isHover ?  y-45: y-15}px`,
+            left: `${isHover ? x-45 :x-15}px`,
             // top: 0+y,
             // left: 0+x,
             // bottom: `${window.innerHeight - y }px`,
@@ -58,7 +40,9 @@ function Cursor() {
             zIndex: 9999,
             boxShadow: "0 0 10px 5px rgba(255, 255, 255, 0.2)",
             overflow: "hidden",
-            margin: 0
+            margin: 0,
+            pointerEvents: "none",
+            // transitionDelay: "100ms",
           }}
         >
           {isHover ? (
