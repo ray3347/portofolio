@@ -59,7 +59,12 @@ const Canvas3D = forwardRef<IControlRef, IPageProps>((props, ref) => {
   const isMd = useMediaQuery(theme.breakpoints.down("md"))
 
   const Model = (modelProps: IModelProps) => {
-    const { nodes }: any = useGLTF(`${process.env.URL_PROD}/compressed.glb`);
+    // dev
+    // const { nodes }: any = useGLTF(`${process.env.URL_DEV}/compressed.glb`);
+
+    // prod
+    const { nodes }: any = useGLTF(`/compressed.glb`);
+    
     // const snap = useSnapshot(state);
     const [hovered, setHovered] = useState(false);
     useCursor(hovered);
