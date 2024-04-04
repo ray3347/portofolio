@@ -1,0 +1,39 @@
+.btn {
+  position: absolute;
+  top: 20;
+  pointer-events: auto;
+  z-index: 5;
+  border-radius: 50;
+  padding: 25;
+  left: 20;
+  color: #fff;
+  letter-spacing: 2px;
+  cursor: pointer;
+
+  &--hoverEffect3 {
+    background: #fff;
+    color: #333;
+    overflow: hidden;
+    z-index: 5;
+
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 101%;
+      width: 101%;
+      clip-path: polygon(0 0, 100% 0, 10% 25%, 0 100%);
+      background: #444;
+      transition: 0.3s cubic-bezier(0.38, 1.15, 0.7, 1.12);
+      box-sizing: border-box;
+      z-index: -1;
+    }
+    &:hover::before {
+      clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+    }
+    &:hover {
+      color: #fff;
+    }
+  }
+}

@@ -1,95 +1,60 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+"use client";
 
-export default function Home() {
+import * as React from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
+import BackButton from "../components/back-button";
+import Layout from "../components/layout";
+import Cursor from "../components/cursor";
+import { proxy, useSnapshot } from "valtio";
+import Canvas3D from "@/components/canvas";
+import { useMediaQuery, useTheme } from "@mui/material";
+
+gsap.registerPlugin(useGSAP);
+
+function Home() {
+  const titleRef: any = useRef();
+  const theme = useTheme();
+  const isMd = useMediaQuery(theme.breakpoints.down("md"));
+
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>src/app/page.tsx</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
-      </div>
-
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore starter templates for Next.js.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
+    <div
+      style={{
+        width: "100%",
+        maxHeight: "100%",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        textAlign: "center",
+      }}
+    >
+      <p
+        ref={titleRef}
+        style={{
+          position: "absolute",
+          zIndex: -1,
+          fontSize: isMd ? 60 : 120,
+          fontWeight: "bold",
+          top: 20,
+          backgroundImage:
+            "linear-gradient(to right, #ff8a00, #e52e71)" /* Specify your gradient colors */,
+          WebkitBackgroundClip: "text" /* Clip the gradient to the text */,
+          color: "transparent",
+          // maxWidth: "30vw"
+          // clipPath: "polygon(0 0, 100% 0, 10% 25%, 0 100%)",
+          // transition: "0.3s cubic-bezier(0.38, 1.15, 0.7, 1.12)"
+        }}
+      >
+        Ansel's Website
+      </p>
+    </div>
+    // <Suspense>
+    //   <Layout>
+    //     <RenderChildren />
+    //   </Layout>
+    // </Suspense>
   );
 }
+
+export default Home;
