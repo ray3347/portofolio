@@ -14,17 +14,31 @@ import GridContent from "@/components/grid-content";
 import { projectList, typeList } from "./constants";
 import { gridTypes } from "@/constants";
 import { useProjects } from "@/utilities";
+import ListButtons from "@/components/list-buttons";
+import ProjectContent from "@/components/project-content";
+import { IProjects } from "./interfaces";
 
 gsap.registerPlugin(useGSAP);
-function Projects() {
+function Projects({ params }: { params: { slug: string } }) {
   const appRef: any = useRef();
   const childRef: any = useRef();
 
   //state
-  const [viewMode, setViewMode] = useState<string | null>(gridTypes.grid);
 
   // other hooks
-  const { active, activate } = useProjects();
+  const { active, activate, mode, switchMode } = useProjects();
+  const [activeProject, setActiveProject] = useState<IProjects | null>(null);
+
+  useEffect(() => {
+    if (active != null) {
+      const proj = projectList.find((x) => x.title === active);
+      if (proj) {
+        setActiveProject(proj);
+      }
+    } else {
+      setActiveProject(null);
+    }
+  }, [active]);
 
   return (
     <div
@@ -39,6 +53,12 @@ function Projects() {
       <div
         style={{
           textAlign: "center",
+          display: "flex",
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "space-between",
+          width: "100%",
+          marginBottom: "3vh",
         }}
       >
         <Typography
@@ -49,6 +69,40 @@ function Projects() {
         >
           PROJECTS
         </Typography>
+        {active ? (
+          <GridButtons
+            image={"/back-icon.svg"}
+            isLarge={false}
+            title="back"
+            desc={null}
+            setActive={(e) => {
+              activate(null);
+            }}
+          />
+        ) : (
+          <div
+            style={{
+              // width: "100%",
+              display: "flex",
+              justifyContent: "end",
+              alignItems: "center",
+              flexDirection: "row",
+              gap: "10px",
+            }}
+          >
+            {typeList.map((obj, idx: number) => (
+              <GridButtons
+                key={obj.name}
+                image={obj.icon}
+                title={obj.name}
+                desc={obj.desc}
+                isLarge={false}
+                activeComponent={mode}
+                setActive={switchMode}
+              />
+            ))}
+          </div>
+        )}
       </div>
       <div
         style={{
@@ -58,7 +112,7 @@ function Projects() {
           gap: "15px",
         }}
       >
-        <div
+        {/* <div
           style={{
             width: "100%",
             display: "flex",
@@ -67,41 +121,87 @@ function Projects() {
             flexDirection: "row",
             gap: "10px",
           }}
-        >
-          {typeList.map((obj, idx: number) => (
-            <GridButtons
-              key={obj.name}
-              image={obj.icon}
-              title={obj.name}
-              desc={obj.desc}
-              isLarge={false}
-              activeComponent={viewMode}
-              setActive={setViewMode}
-            />
-          ))}
-        </div>
+        ></div> */}
         <div
           style={{
-            width: "100%",
-            display: "flex",
-            justifyContent: "start",
-            flexWrap: "wrap",
-            alignItems: "center",
-            flexDirection: "row",
-            gap: "15px",
+            maxHeight: "45vh",
+            // padding:"5%"
           }}
         >
-          {projectList.map((obj) => (
-            <GridButtons
-              key={obj.title}
-              image={obj.icon}
-              title={obj.title}
-              desc={obj.desc}
-              isLarge={true}
-              activeComponent={active}
-              setActive={activate}
+          {active ? (
+            <ProjectContent
+              key={activeProject?.title}
+              title={activeProject?.desc ?? ""}
+              story={activeProject?.story ?? ""}
+              assets={activeProject?.assets}
+              url={activeProject?.url}
             />
-          ))}
+          ) : (
+            <>
+              {mode === gridTypes.grid && (
+                <div
+                  style={{
+                    width: "100%",
+                    display: "flex",
+                    justifyContent: "start",
+                    flexWrap: "wrap",
+                    alignItems: "center",
+                    flexDirection: "row",
+                    gap: "15px",
+                  }}
+                >
+                  {projectList.map((obj) => (
+                    <GridButtons
+                      key={obj.title}
+                      image={obj.icon}
+                      title={obj.title}
+                      desc={obj.desc}
+                      isLarge={true}
+                      activeComponent={active}
+                      setActive={activate}
+                    />
+                  ))}
+                </div>
+              )}
+              {mode === gridTypes.list && (
+                <div
+                  style={{
+                    width: "100%",
+                    maxHeight: "45vh",
+                    overflow: "auto",
+                    // marginRight: "-15px",
+                    // paddingRight: "15px",
+                    scrollbarWidth: "none",
+
+                    justifyContent: "center",
+                    display: "flex",
+                    alignItems: "start",
+                  }}
+                >
+                  <div
+                    style={{
+                      width: "90%",
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: "10px",
+                      padding: "5px",
+                    }}
+                  >
+                    {projectList.map((obj) => (
+                      <ListButtons
+                        key={obj.title}
+                        image={obj.icon}
+                        title={obj.title}
+                        desc={obj.desc}
+                        activeComponent={active}
+                        setActive={activate}
+                      />
+                    ))}
+                  </div>
+                </div>
+              )}
+            </>
+          )}
         </div>
       </div>
       {/* <GridContent/> */}

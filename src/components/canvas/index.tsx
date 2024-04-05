@@ -55,6 +55,8 @@ const Canvas3D = forwardRef<IControlRef, IPageProps>((props, ref) => {
   const pathname = usePathname();
   const [initPath, setInitPath] = useState("");
   const [currPath, setCurrPath] = useState("/");
+  
+  const [autoRotateEnabled, setAutoRotateEnabled] = useState(true);
   const theme = useTheme();
   const isMd = useMediaQuery(theme.breakpoints.down("md"));
 
@@ -88,12 +90,12 @@ const Canvas3D = forwardRef<IControlRef, IPageProps>((props, ref) => {
             if (pathname != modelProps.url) {
               e.stopPropagation();
 
-              look(
-                modelProps.position[0],
-                modelProps.position[1],
-                modelProps.position[2],
-                modelProps.name
-              );
+              // look(
+              //   modelProps.position[0],
+              //   modelProps.position[1],
+              //   modelProps.position[2],
+              //   modelProps.name
+              // );
               if (modelProps.func) {
                 modelProps.func(true);
               }
@@ -167,7 +169,6 @@ const Canvas3D = forwardRef<IControlRef, IPageProps>((props, ref) => {
       const cameraControlsRef: any = useRef();
       const meshRef: any = useRef();
       const [cameraRotation, setCameraRotation] = useState<any>(0);
-      const [autoRotateEnabled, setAutoRotateEnabled] = useState(true);
       // const [isZoom, setIsZoom] = useState<boolean | undefined>(undefined);
 
       const handleReset = () => {
@@ -220,20 +221,23 @@ const Canvas3D = forwardRef<IControlRef, IPageProps>((props, ref) => {
 
           // setAutoRotateEnabled(true);
         }
-      }, [x, y, z]);
+      }, [x || y || z]);
 
       useEffect(() => {
-        if (initPath === "" && currPath != pathname) {
-          // console.log("BABI22");
+        // console.log("BABI22", initPath, currPath, pathname);
+        if (currPath != pathname) {
+          // console.log("BABI23");
           setInitPath(pathname);
           setCurrPath(pathname);
           if (pathname != "/") {
+            
             const activeObject = objects.find((x) => x.url === pathname);
+            
+            // console.log("BABAB", activeObject)
             if (activeObject) {
               if (props.callback) {
                 props.callback(true);
               }
-
               look(
                 activeObject.position[0],
                 activeObject.position[1],
@@ -242,8 +246,14 @@ const Canvas3D = forwardRef<IControlRef, IPageProps>((props, ref) => {
               );
             }
           } else {
+            // console.log("BABI")           
             handleReset();
           }
+        }
+        else if(initPath === ""){
+          setInitPath(pathname);
+          setCurrPath(pathname);
+          handleReset();
         }
       }, [pathname]);
 
@@ -259,9 +269,9 @@ const Canvas3D = forwardRef<IControlRef, IPageProps>((props, ref) => {
               setCameraRotation(cameraRotation + 0.005);
               meshRef.current.rotation.y -= 0.005;
             }
-            // const rotateX = cameraRotation + 0.05;
+            // const rotateX = cameraRotation + 0.005;
             // cameraControlsRef.current.rotateAzimuthTo(
-            //   (cameraRotation + 0.01),
+            //   (cameraRotation + 0.005),
             //   true
             // );
             // setCameraRotation(rotateX);
@@ -290,6 +300,15 @@ const Canvas3D = forwardRef<IControlRef, IPageProps>((props, ref) => {
       //   }
       // },[cameraRotation])
 
+      // useEffect(()=>{
+      //   const timeoutId = setTimeout(() => {
+      //     setAutoRotateEnabled(true)
+      //   }, 2000);
+    
+      //   // Cleanup function to clear the timeout if the component unmounts
+      //   return () => clearTimeout(timeoutId);
+      // },[autoRotateEnabled])
+
       return (
         <>
           <OrbitControls
@@ -298,8 +317,9 @@ const Canvas3D = forwardRef<IControlRef, IPageProps>((props, ref) => {
             maxPolarAngle={Math.PI / 1.75}
             minAzimuthAngle={0}
             maxAzimuthAngle={Math.PI / 1.75}
+          
           />
-          <CameraControls ref={cameraControlsRef} />
+          <CameraControls ref={cameraControlsRef}/>
 
           <Suspense fallback={null}>
             <group position={[0, 0, 0]} ref={meshRef}>
@@ -322,6 +342,12 @@ const Canvas3D = forwardRef<IControlRef, IPageProps>((props, ref) => {
                           //   cameraRotation,
                           //   false
                           // );
+                          if (meshRef.current) {
+                            // setCameraRotation(cameraRotation + 0.005);
+                            // meshRef.current.rotation.y = 0;
+
+                            cameraControlsRef.current.position = [x,meshRef.current.rotation.y, z]
+                          }
                         }
                       }
                     }}

@@ -43,3 +43,14 @@ export const useProjects =  create<IGridState & IGridAction>()((set)=>({
     }))
 }))
 
+// export const useProjects =  create<IGridState & IGridAction>()((set)=>({
+//     active: null,
+//     mode: gridTypes.grid,
+//     activate: (active)=> set(()=>({
+//         active: active
+//     })),
+//     switchMode: (mode)=> set(()=>({
+//         mode: mode
+//     }))
+// }))
+

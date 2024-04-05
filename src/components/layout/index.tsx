@@ -40,17 +40,18 @@ function Layout(props: ILayoutProps) {
   });
 
   useEffect(() => {
+    // setActivePath(pathname)
     if (pageRef.current && contentRef.current) {
       gsap.to(pageRef.current, {
         height: "0vh",
         opacity: "0%",
-        duration: 0.0001,
+        duration: 0,
         boxShadow: "none",
         transform: "none",
       });
       gsap.to(contentRef.current, {
         opacity: "0%",
-        duration: 0.0001,
+        duration: 0,
       });
 
       if (name !== pathname) {
@@ -141,43 +142,43 @@ function Layout(props: ILayoutProps) {
           ref={childRef}
         />
       </div>
-      <Suspense>
-        <main style={pathname === "/" ? styles.beforeStyle : styles.afterStyle}>
-          {pathname === "/" ? (
-            <>{props.children}</>
-          ) : (
+      <main style={pathname === "/" ? styles.beforeStyle : styles.afterStyle}>
+        {pathname === "/" ? (
+          <>{props.children}</>
+        ) : (
+          <div
+            className="paper"
+            ref={pageRef}
+            // elevation={24}
+            style={{
+              position: "absolute",
+              padding: "2vw",
+              width: "40vw",
+              height: "0vh",
+              opacity: "0%",
+              // bottom: 0,
+              display: "flex",
+              margin: "auto",
+              // zIndex: 10,
+              backgroundColor: "black",
+              borderRadius: 20,
+              border: "solid 5px rgba(255, 0, 255, 1)",
+              overflow: "auto",
+              scrollbarWidth: "none"
+            }}
+          >
             <div
-              className="paper"
-              ref={pageRef}
-              // elevation={24}
+              ref={contentRef}
               style={{
-                position: "absolute",
-                padding: "2vw",
-                width: "40vw",
-                height: "0vh",
                 opacity: "0%",
-                // bottom: 0,
-                display: "flex",
-                margin: "auto",
-                // zIndex: 10,
-                backgroundColor: "black",
-                borderRadius: 20,
-                border: "solid 5px rgba(255, 0, 255, 1)",
+                width: "100%",
               }}
             >
-              <div
-                ref={contentRef}
-                style={{
-                  opacity: "0%",
-                  width: "100%",
-                }}
-              >
-                {props.children}
-              </div>
+              <Suspense fallback={null}>{props.children}</Suspense>
             </div>
-          )}
-        </main>
-      </Suspense>
+          </div>
+        )}
+      </main>
 
       {/* <main
         style={{

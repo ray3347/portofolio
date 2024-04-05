@@ -3,6 +3,6 @@ export interface IGridButtonsProps{
     title: string;
     desc: string | null;
     isLarge: boolean;
-    activeComponent: string | null;
-    setActive: (e: string | null) => void;
+    activeComponent?: string |null;
+    setActive?: (e: any) => void;
 }
