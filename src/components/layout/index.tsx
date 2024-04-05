@@ -40,7 +40,6 @@ function Layout(props: ILayoutProps) {
   });
 
   useEffect(() => {
-    // setActivePath(pathname)
     if (pageRef.current && contentRef.current) {
       gsap.to(pageRef.current, {
         height: "0vh",
@@ -82,7 +81,7 @@ function Layout(props: ILayoutProps) {
         const tl = gsap.timeline();
         gsap.to(pageRef.current, { opacity: "100%", duration: 1.5 });
         tl.to(pageRef.current, {
-          height: "70vh",
+          height: isMd ? "80vh": "70vh",
           ease: "expo.inOut",
           duration: 1,
         })
@@ -99,6 +98,10 @@ function Layout(props: ILayoutProps) {
     }
   }, [pageRef.current || contentRef.current]);
 
+  // useEffect(()=>{
+  //   changePos(false);
+  // },[name === null])
+
   return (
     <div
       ref={appRef}
@@ -111,11 +114,12 @@ function Layout(props: ILayoutProps) {
         cursor: isMd ? "default" : "none",
         // pointerEvents: "none",
         zIndex: "auto",
+        overflow: "hidden"
       }}
     >
       {!isMd && <Cursor />}
 
-      {name && (
+      {/* {name && (
         <BackButton
           callbackFunc={() => {
             // childRef.current?.func();
@@ -123,7 +127,7 @@ function Layout(props: ILayoutProps) {
             changePos(false);
           }}
         />
-      )}
+      )} */}
       <div
         className="canvas3d"
         style={{
@@ -132,6 +136,8 @@ function Layout(props: ILayoutProps) {
           pointerEvents: "none",
           overflow: "hidden",
           left: "-50vw",
+          // maxHeight: "100vh",
+          // maxWidth: "100vw"
         }}
       >
         <Canvas3D
@@ -142,7 +148,7 @@ function Layout(props: ILayoutProps) {
           ref={childRef}
         />
       </div>
-      <main style={pathname === "/" ? styles.beforeStyle : styles.afterStyle}>
+      <main style={pathname === "/" ? styles.beforeStyle : (isMd ? styles.afterStyleMd : styles.afterStyle)}>
         {pathname === "/" ? (
           <>{props.children}</>
         ) : (
@@ -152,8 +158,8 @@ function Layout(props: ILayoutProps) {
             // elevation={24}
             style={{
               position: "absolute",
-              padding: "2vw",
-              width: "40vw",
+              padding: "4vh",
+              width: isMd ? "80vw": "40vw",
               height: "0vh",
               opacity: "0%",
               // bottom: 0,

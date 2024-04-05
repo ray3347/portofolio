@@ -1,30 +1,53 @@
-import { Typography } from "@mui/material";
+"use client";
+import HomeButton from "@/components/home-button";
+import { Typography, useMediaQuery, useTheme } from "@mui/material";
 
-function Contacts(){
-    return(
-        <div
+function Contacts() {
+  const theme = useTheme();
+  const isMd = useMediaQuery(theme.breakpoints.down("md"));
+  return (
+    <div
       style={{
         display: "flex",
         alignItems: "start",
         justifyContent: "center",
-        flexDirection: "column"
+        flexDirection: "column",
       }}
     >
       <div
         style={{
           textAlign: "center",
+          display: "flex",
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "space-between",
+          width: "100%",
+          marginBottom: "3vh",
         }}
       >
-        <Typography
-          sx={{
-            fontSize: "40px",
-            fontWeight: "bold",
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "start",
+            alignItems: "center",
+            gap: "20px",
           }}
         >
-          SOCIAL MEDIA
-        </Typography>
+          <HomeButton />
+          <Typography
+            sx={{
+              fontSize: isMd ? "14px" : "24px",
+              fontWeight: "bold",
+            }}
+          >
+            SOCIAL MEDIA
+          </Typography>
+        </div>
       </div>
-      <Typography>
+      <Typography sx={{
+        fontSize: isMd ? "10px" : "14px",
+      }}>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc sapien
         est, bibendum et tellus quis, iaculis efficitur nulla. Morbi facilisis
         feugiat lectus sagittis pharetra. Mauris finibus nulla et ligula rutrum
@@ -35,7 +58,7 @@ function Contacts(){
         eros molestie porttitor.
       </Typography>
     </div>
-    );
+  );
 }
 
 export default Contacts;

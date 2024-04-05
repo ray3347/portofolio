@@ -12,4 +12,14 @@ export const styles = {
     width: "50vw",
     height: "100vh",
   },
+  afterStyleMd: {
+    zIndex: 2,
+    position: "absolute",
+    // right: 0,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    width: "100vw",
+    height: "100vh",
+  }
 };

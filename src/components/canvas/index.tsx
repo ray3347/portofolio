@@ -18,6 +18,7 @@ import React, {
 import {
   CameraControls,
   ContactShadows,
+  GradientTexture,
   OrbitControls,
   TransformControls,
   useCursor,
@@ -55,7 +56,7 @@ const Canvas3D = forwardRef<IControlRef, IPageProps>((props, ref) => {
   const pathname = usePathname();
   const [initPath, setInitPath] = useState("");
   const [currPath, setCurrPath] = useState("/");
-  
+
   const [autoRotateEnabled, setAutoRotateEnabled] = useState(true);
   const theme = useTheme();
   const isMd = useMediaQuery(theme.breakpoints.down("md"));
@@ -121,7 +122,13 @@ const Canvas3D = forwardRef<IControlRef, IPageProps>((props, ref) => {
           }
           castShadow={true}
           receiveShadow={true}
-        ></mesh>
+        >
+          {/* <GradientTexture
+            stops={[0, 0.8]} // As many stops as you want
+            colors={[modelProps.color, '#e52e71']} // Colors need to match the number of stops
+            size={100} // Size is optional, default = 1024
+          /> */}
+        </mesh>
 
         {name === modelProps.name && (
           <>
@@ -230,9 +237,8 @@ const Canvas3D = forwardRef<IControlRef, IPageProps>((props, ref) => {
           setInitPath(pathname);
           setCurrPath(pathname);
           if (pathname != "/") {
-            
             const activeObject = objects.find((x) => x.url === pathname);
-            
+
             // console.log("BABAB", activeObject)
             if (activeObject) {
               if (props.callback) {
@@ -246,11 +252,10 @@ const Canvas3D = forwardRef<IControlRef, IPageProps>((props, ref) => {
               );
             }
           } else {
-            // console.log("BABI")           
+            // console.log("BABI")
             handleReset();
           }
-        }
-        else if(initPath === ""){
+        } else if (initPath === "") {
           setInitPath(pathname);
           setCurrPath(pathname);
           handleReset();
@@ -304,7 +309,7 @@ const Canvas3D = forwardRef<IControlRef, IPageProps>((props, ref) => {
       //   const timeoutId = setTimeout(() => {
       //     setAutoRotateEnabled(true)
       //   }, 2000);
-    
+
       //   // Cleanup function to clear the timeout if the component unmounts
       //   return () => clearTimeout(timeoutId);
       // },[autoRotateEnabled])
@@ -317,9 +322,8 @@ const Canvas3D = forwardRef<IControlRef, IPageProps>((props, ref) => {
             maxPolarAngle={Math.PI / 1.75}
             minAzimuthAngle={0}
             maxAzimuthAngle={Math.PI / 1.75}
-          
           />
-          <CameraControls ref={cameraControlsRef}/>
+          <CameraControls ref={cameraControlsRef} />
 
           <Suspense fallback={null}>
             <group position={[0, 0, 0]} ref={meshRef}>
@@ -346,7 +350,11 @@ const Canvas3D = forwardRef<IControlRef, IPageProps>((props, ref) => {
                             // setCameraRotation(cameraRotation + 0.005);
                             // meshRef.current.rotation.y = 0;
 
-                            cameraControlsRef.current.position = [x,meshRef.current.rotation.y, z]
+                            cameraControlsRef.current.position = [
+                              x,
+                              meshRef.current.rotation.y,
+                              z,
+                            ];
                           }
                         }
                       }

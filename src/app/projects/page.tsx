@@ -8,18 +8,27 @@ import { proxy, useSnapshot } from "valtio";
 import Canvas3D from "@/components/canvas";
 import BackButton from "@/components/back-button";
 import Layout from "@/components/layout";
-import { Button, Card, Paper, Typography } from "@mui/material";
+import {
+  Button,
+  Card,
+  Paper,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
 import GridButtons from "@/components/grid-buttons";
 import GridContent from "@/components/grid-content";
 import { projectList, typeList } from "./constants";
 import { gridTypes } from "@/constants";
-import { useProjects } from "@/utilities";
+import { useCanvasCamera, useProjects } from "@/utilities";
 import ListButtons from "@/components/list-buttons";
 import ProjectContent from "@/components/project-content";
 import { IProjects } from "./interfaces";
+import { useRouter } from "next/navigation";
+import HomeButton from "@/components/home-button";
 
 gsap.registerPlugin(useGSAP);
-function Projects({ params }: { params: { slug: string } }) {
+function Projects() {
   const appRef: any = useRef();
   const childRef: any = useRef();
 
@@ -27,7 +36,11 @@ function Projects({ params }: { params: { slug: string } }) {
 
   // other hooks
   const { active, activate, mode, switchMode } = useProjects();
+  const { look } = useCanvasCamera();
   const [activeProject, setActiveProject] = useState<IProjects | null>(null);
+  const router = useRouter();
+  const theme = useTheme();
+  const isMd = useMediaQuery(theme.breakpoints.down("md"));
 
   useEffect(() => {
     if (active != null) {
@@ -61,14 +74,25 @@ function Projects({ params }: { params: { slug: string } }) {
           marginBottom: "3vh",
         }}
       >
-        <Typography
-          sx={{
-            fontSize: "2vw",
-            fontWeight: "bold",
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "start",
+            alignItems: "center",
+            gap: isMd ? "10px" : "20px",
           }}
         >
-          PROJECTS
-        </Typography>
+          <HomeButton />
+          <Typography
+            sx={{
+              fontSize: isMd ? "14px" : "24px",
+              fontWeight: "bold",
+            }}
+          >
+            PROJECTS
+          </Typography>
+        </div>
         {active ? (
           <GridButtons
             image={"/back-icon.svg"}
@@ -112,19 +136,12 @@ function Projects({ params }: { params: { slug: string } }) {
           gap: "15px",
         }}
       >
-        {/* <div
-          style={{
-            width: "100%",
-            display: "flex",
-            justifyContent: "end",
-            alignItems: "center",
-            flexDirection: "row",
-            gap: "10px",
-          }}
-        ></div> */}
         <div
           style={{
-            maxHeight: "45vh",
+            maxHeight: "50vh",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
             // padding:"5%"
           }}
         >
@@ -144,34 +161,50 @@ function Projects({ params }: { params: { slug: string } }) {
                     width: "100%",
                     display: "flex",
                     justifyContent: "start",
-                    flexWrap: "wrap",
+                    // flexWrap: "wrap",
                     alignItems: "center",
-                    flexDirection: "row",
-                    gap: "15px",
+                    flexDirection: "column",
+                    // gap: "15px",
+                    maxHeight: "50vh",
+                    overflow: "auto",
+                    scrollbarWidth: "none",
                   }}
                 >
-                  {projectList.map((obj) => (
-                    <GridButtons
-                      key={obj.title}
-                      image={obj.icon}
-                      title={obj.title}
-                      desc={obj.desc}
-                      isLarge={true}
-                      activeComponent={active}
-                      setActive={activate}
-                    />
-                  ))}
+                  <div
+                    style={{
+                      width: "90%",
+                      display: "flex",
+                      justifyContent: "space-between",
+                      flexWrap: "wrap",
+                      alignItems: "center",
+                      flexDirection: "row",
+                      gap: isMd ? "5px": "15px",
+                      padding: "5px",
+                    }}
+                  >
+                    {projectList.map((obj) => (
+                      <GridButtons
+                        key={obj.title}
+                        image={obj.icon}
+                        title={obj.title}
+                        desc={obj.desc}
+                        isLarge={true}
+                        activeComponent={active}
+                        setActive={activate}
+                      />
+                    ))}
+                  </div>
                 </div>
               )}
               {mode === gridTypes.list && (
                 <div
                   style={{
                     width: "100%",
-                    maxHeight: "45vh",
+                    maxHeight: "50vh",
                     overflow: "auto",
                     // marginRight: "-15px",
                     // paddingRight: "15px",
-                    scrollbarWidth: "none",
+                    // scrollbarWidth: "none",
 
                     justifyContent: "center",
                     display: "flex",

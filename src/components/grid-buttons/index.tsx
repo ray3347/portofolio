@@ -2,6 +2,7 @@ import { useMousePosition, useProjects } from "@/utilities";
 import { IGridButtonsProps } from "./interfaces";
 import gsap from "gsap";
 import { useEffect, useRef, useState } from "react";
+import { useMediaQuery, useTheme } from "@mui/material";
 
 function GridButtons(props: IGridButtonsProps) {
   const buttonRef: any = useRef();
@@ -9,22 +10,13 @@ function GridButtons(props: IGridButtonsProps) {
   const { hovCheck } = useMousePosition();
   const [hover, setHover] = useState(false);
   //   const { active, activate } = useProjects();
+  const theme = useTheme();
+  const isMd = useMediaQuery(theme.breakpoints.down("md"))
 
   useEffect(() => {
     setHover(false);
   }, []);
 
-  //   useEffect(() => {
-
-  //     if (hover === true) {
-  //       gsap.to(buttonRef.current, {
-  //         boxShadow: "5px 5px 0 rgba(46, 46, 46, 0.6)",
-  //         duration: 0.5,
-  //       });
-  //     }else{
-  //         gsap.to(buttonRef.current, { boxShadow: "none", duration: 0.0001 });
-  //     }
-  //   }, [hover]);
   return (
     <div
       onMouseEnter={() => {
@@ -45,12 +37,13 @@ function GridButtons(props: IGridButtonsProps) {
       <div
         ref={buttonRef}
         style={{
-          backgroundColor:
-            props.title === props.activeComponent
-              ? "rgba(128, 128, 128, 1)"
-              : "rgba(46, 46, 46, 0.8)",
-          borderRadius: props.isLarge ? 30 : 15,
-          padding: props.isLarge ? "1vw" : "1vw",
+          background:
+            props.title === props.activeComponent || hover
+              // ? "rgba(128, 128, 128, 1)"
+              ? "linear-gradient(to right, #ff8a00, #e52e71)"
+              : props.background ?? "rgba(46, 46, 46, 0.8)",
+          borderRadius: props.isLarge ? "3vh" : "1.5vh",
+          padding: "2vh",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
@@ -59,26 +52,26 @@ function GridButtons(props: IGridButtonsProps) {
             props.title === props.activeComponent
               ? "3px 3px 0 rgba(128, 128, 128, 0.5)"
               : hover
-              ? "3px 3px 0 rgba(46, 46, 46, 0.6)"
+              ? "5px 5px 0 rgba(46, 46, 46, 0.6)"
               : "none",
           position: "relative",
-          width: props.isLarge ? "5vw" : "3vw",
-          height: props.isLarge ? "5vw" : "3vw",
+          width: props.isLarge ? "9vh" : "6vh",
+          height: props.isLarge ? "9vh" : "6vh",
           transition:
-            "box-shadow 0.3s ease-in-out, background-color 1s ease-out, transform 0.3s ease-in-out",
+            "box-shadow 0.3s ease-in-out, background 0.5s ease-in-out, transform 0.3s ease-in-out",
           transform:
             props.title === props.activeComponent
-              ? "translate(-3px, -3px)"
+              ? "translate(-5px, -5px)"
               : hover
-              ? "translate(-3px, -3px)"
+              ? "translate(-5px, -5px)"
               : "none",
         }}
       >
         <img
           src={props.image}
           style={{
-            width: props.isLarge ? "1.5vw" : "1vw",
-            height: props.isLarge ? "1.5vw" : "1vw",
+            width: props.isLarge ? "3vh" : "2vh",
+            height: props.isLarge ? "3vh" : "2vh",
             top: "50%",
             left: "50%",
             transform: "translate(-50%, -50%)",
@@ -111,7 +104,7 @@ function GridButtons(props: IGridButtonsProps) {
       {props.desc && (
         <div
         style={{
-          fontSize: "12px",
+          fontSize: isMd ? "8px": "12px",
           textAlign: "center",
           fontWeight: "bold",
           display: "flex",
@@ -120,7 +113,7 @@ function GridButtons(props: IGridButtonsProps) {
           padding: 7,
         }}
       >
-        <p>{props.desc.length > 10 ? props.desc.substring(0,10) + "..." : props.desc}</p>
+        <p>{props.desc.length > 9 ? props.desc.substring(0,9) + "..." : props.desc}</p>
       </div>
       )}
       

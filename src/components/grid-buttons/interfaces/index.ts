@@ -5,4 +5,5 @@ export interface IGridButtonsProps{
     isLarge: boolean;
     activeComponent?: string |null;
     setActive?: (e: any) => void;
+    background? : string;
 }

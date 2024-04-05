@@ -35,7 +35,7 @@ export const objects: IModelProps[] = [
     color: "#A79A95",
     position: [18, 15, -25],
     rotation: [2, 0, -0],
-    url: "/"
+    url: "/sandbox"
   },
   {
     name: "Roundcube001",
