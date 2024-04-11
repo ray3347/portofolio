@@ -1,5 +1,6 @@
 "use client";
 import HomeButton from "@/components/home-button";
+import UnderConstruction from "@/components/under-construction";
 import { Typography, useMediaQuery, useTheme } from "@mui/material";
 
 function Credits() {
@@ -13,6 +14,7 @@ function Credits() {
         alignItems: "start",
         justifyContent: "center",
         flexDirection: "column",
+        height: "100%"
       }}
     >
       <div
@@ -46,7 +48,8 @@ function Credits() {
           </Typography>
         </div>
       </div>
-      <Typography sx={{
+      <UnderConstruction/>
+      {/* <Typography sx={{
         fontSize: isMd ? "10px" : "14px",
       }}>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc sapien
@@ -57,7 +60,7 @@ function Credits() {
         convallis, vel porttitor lacus venenatis. Cras non massa ultricies velit
         sollicitudin vestibulum quis in eros. Pellentesque luctus nulla blandit
         eros molestie porttitor.
-      </Typography>
+      </Typography> */}
     </div>
   );
 }

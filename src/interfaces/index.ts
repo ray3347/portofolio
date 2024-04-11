@@ -68,3 +68,19 @@ export interface IAboutState{
 export interface IAboutAction{
   activate: (obj: IAboutState['active']) => void;
 }
+
+// contacts page
+export interface ISocials{
+  type: string;
+  icon: string;
+  id: string;
+  url?: string;
+}
+
+export interface IContactsState{
+  socials: ISocials[];
+}
+
+export interface IContactsAction{
+  fetch: (obj: IContactsState['socials']) => void;
+}

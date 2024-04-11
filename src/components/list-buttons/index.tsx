@@ -61,8 +61,8 @@ function ListButtons(props: IListButtonsProps) {
           alignItems: "center",
           justifyContent: "center",
           flexDirection: "row",
-          width: "6vh",
-          height: "6vh",
+          // width: "6vh",
+          height: isMd ? "5vh" : "6vh",
           boxShadow:
             props.title === props.activeComponent
               ? "5px 5px 0 rgba(128, 128, 128, 0.5)"
@@ -86,8 +86,8 @@ function ListButtons(props: IListButtonsProps) {
           src={props.image}
           style={{
             margin: "auto",
-            width: "2vh",
-            height: "2vh",
+            width: isMd ? "1.3vh" : "2vh",
+            height: isMd ? "1.3vh" : "2vh",
             // top: "50%",
             // left: "50%",
             // transform: "translate(-50%, -50%)",
@@ -125,7 +125,7 @@ function ListButtons(props: IListButtonsProps) {
               // ? "rgba(128, 128, 128, 1)"
               ? "linear-gradient(to right, #ff8a00, #e52e71)"
               : "rgba(46, 46, 46, 0.8)",
-          borderRadius: "2vh",
+          borderRadius: "1vh",
           padding: "1vw",
           display: "flex",
           alignItems: "center",
@@ -139,7 +139,7 @@ function ListButtons(props: IListButtonsProps) {
               : "none",
           position: "relative",
           width: "100%",
-          height: "6vh",
+          height: isMd ? "5vh" : "6vh",
           transition:
             "box-shadow 0.3s ease-in-out, background-color 1s ease-out, transform 0.3s ease-in-out",
           transform:
@@ -148,18 +148,19 @@ function ListButtons(props: IListButtonsProps) {
               : hover
               ? "translate(-5px, -5px)"
               : "none",
+              paddingLeft: isMd ? "2vw" : "1.5vw",
         }}
       >
         {props.desc && (
           <div
             style={{
-              fontSize: isMd ? "10px": "14px",
+              fontSize: isMd ? "2vw": "14px",
               textAlign: "center",
               fontWeight: "bold",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              padding: 7,
+              // padding: 7,
             }}
           >
             <p>

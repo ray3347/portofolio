@@ -1,10 +1,28 @@
 "use client";
 import HomeButton from "@/components/home-button";
+import { useMousePosition, useSocials } from "@/utilities";
 import { Typography, useMediaQuery, useTheme } from "@mui/material";
+import { Suspense, useEffect } from "react";
+import { fetchSocials } from "./utilities";
+import { ISocials } from "@/interfaces";
+import GridButtons from "@/components/grid-buttons";
 
 function Contacts() {
   const theme = useTheme();
   const isMd = useMediaQuery(theme.breakpoints.down("md"));
+  const { socials, fetch } = useSocials();
+  const { hovCheck } = useMousePosition();
+
+  useEffect(() => {
+    if (socials.length <= 0) {
+      const data = fetchSocials().then((x: ISocials[]) => {
+        fetch(x);
+
+        console.log(x);
+      });
+    }
+  }, []);
+
   return (
     <div
       style={{
@@ -12,6 +30,8 @@ function Contacts() {
         alignItems: "start",
         justifyContent: "center",
         flexDirection: "column",
+        width: "100%",
+        height: "100%",
       }}
     >
       <div
@@ -31,7 +51,7 @@ function Contacts() {
             flexDirection: "row",
             justifyContent: "start",
             alignItems: "center",
-            gap: "2vw"
+            gap: "2vw",
           }}
         >
           <HomeButton />
@@ -45,7 +65,72 @@ function Contacts() {
           </Typography>
         </div>
       </div>
-      <Typography sx={{
+      <div
+        style={{
+          display: "flex",
+          height: "100%",
+          width: "100%",
+          flexDirection: "column",
+          alignItems: "start",
+          justifyContent: "center",
+          gap: "10px",
+        }}
+      >
+        <Typography
+          sx={{
+            fontSize: isMd ? "1.7vw" : "0.7vw",
+          }}
+        >
+          For business inquiries, or if you just want to chat about stuffs, feel
+          free to contact me on my socials listed below!
+        </Typography>
+        <div
+          style={{
+            height: "100%",
+            width: "100%",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "start",
+            justifyContent: "start",
+            gap: "10px",
+          }}
+        >
+          <Suspense fallback={null}>
+            {socials.map((soc) => (
+              <div
+                key={soc.type}
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "start",
+                  gap: "10px",
+                }}
+              >
+                <GridButtons
+                  image={soc.icon}
+                  desc={null}
+                  isLarge={false}
+                  title={soc.type}
+                  setActive={(e) => {
+                    if (soc.url) {
+                      window.open(soc.url);
+                    }
+                  }}
+                />
+                <Typography
+                  sx={{
+                    fontSize: isMd ? "1.7vw" : "0.7vw",
+                  }}
+                >
+                  {soc.id}
+                </Typography>
+              </div>
+            ))}
+          </Suspense>
+        </div>
+      </div>
+      {/* <Typography sx={{
         fontSize: isMd ? "10px" : "14px",
       }}>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc sapien
@@ -56,7 +141,7 @@ function Contacts() {
         convallis, vel porttitor lacus venenatis. Cras non massa ultricies velit
         sollicitudin vestibulum quis in eros. Pellentesque luctus nulla blandit
         eros molestie porttitor.
-      </Typography>
+      </Typography> */}
     </div>
   );
 }
