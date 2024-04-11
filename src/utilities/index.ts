@@ -6,12 +6,18 @@ export const useMousePosition = create<IMousePosition & IMouseMove>()((set)=>({
     x: 0,
     y: 0,
     isHover: false,
+    title: null,
+    desc: null,
     mov: (x,y) => set(()=>({
         x: x,
         y: y
     })),
     hovCheck: (isHover) => set(()=>({
         isHover: isHover
+    })),
+    showInfo: (title, desc)=> set(()=>({
+        title: title,
+        desc: desc
     }))
 }))
 
@@ -42,15 +48,3 @@ export const useProjects =  create<IGridState & IGridAction>()((set)=>({
         mode: mode
     }))
 }))
-
-// export const useProjects =  create<IGridState & IGridAction>()((set)=>({
-//     active: null,
-//     mode: gridTypes.grid,
-//     activate: (active)=> set(()=>({
-//         active: active
-//     })),
-//     switchMode: (mode)=> set(()=>({
-//         mode: mode
-//     }))
-// }))
-

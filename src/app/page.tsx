@@ -38,8 +38,8 @@ function Home() {
           fontWeight: "bold",
           top: 20,
           backgroundImage:
-            "linear-gradient(to right, #ff8a00, #e52e71)" /* Specify your gradient colors */,
-          WebkitBackgroundClip: "text" /* Clip the gradient to the text */,
+            "linear-gradient(to right, #ff8a00, #e52e71)",
+          WebkitBackgroundClip: "text",
           color: "transparent",
           // maxWidth: "30vw"
           // clipPath: "polygon(0 0, 100% 0, 10% 25%, 0 100%)",

@@ -47,11 +47,13 @@ export const projectList: IProjects[] = [
     story:
       "Native Full-Stack Desktop Application, made with JavaFX and MySQL",
   },
-  // {
-  //     title: "greenmate-api",
-  //     desc: "API GreenMate",
-  //     icon: "nestjs-icon.svg",
-  // },
+  {
+      title: "research-ai",
+      desc: "Deep Learning Research",
+      icon: "research-icon.svg",
+      url: "https://ieeexplore.ieee.org/document/10352209",
+      story: "Research paper about deep learning on image classification, titled \"The Impact of Hyperparameter Tuning in Convolutional Neural Network on Image Classification Model: A Case Study of Plant Disease Detection\", available on IEEE Xplore ",
+  },
   // {
   //     title: "greenmate-api",
   //     desc: "API GreenMate",

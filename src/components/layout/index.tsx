@@ -12,6 +12,7 @@ import BackButton from "../back-button";
 import { usePathname, useRouter } from "next/navigation";
 import { styles } from "./styles";
 import { Paper, duration, useMediaQuery, useTheme } from "@mui/material";
+import HoverPopup from "../hover-popup";
 
 gsap.registerPlugin(useGSAP);
 
@@ -118,6 +119,7 @@ function Layout(props: ILayoutProps) {
       }}
     >
       {!isMd && <Cursor />}
+      {!isMd && <HoverPopup/>}
 
       {/* {name && (
         <BackButton
@@ -166,7 +168,7 @@ function Layout(props: ILayoutProps) {
               display: "flex",
               margin: "auto",
               // zIndex: 10,
-              backgroundColor: "black",
+              backgroundColor: "#0C090A",
               borderRadius: 20,
               border: "solid 5px rgba(255, 0, 255, 1)",
               overflow: "auto",

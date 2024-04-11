@@ -37,7 +37,7 @@ function Cursor() {
             // bottom: `${window.innerHeight - y }px`,
             // right: `${window.innerWidth - x}px`,
             transition: "padding 0.1s ease-in-out",
-            zIndex: 9999,
+            zIndex: 9998,
             boxShadow: "0 0 10px 5px rgba(255, 255, 255, 0.2)",
             overflow: "hidden",
             margin: 0,

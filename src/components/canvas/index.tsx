@@ -71,7 +71,7 @@ const Canvas3D = forwardRef<IControlRef, IPageProps>((props, ref) => {
     // const snap = useSnapshot(state);
     const [hovered, setHovered] = useState(false);
     useCursor(hovered);
-    const { hovCheck } = useMousePosition();
+    const { hovCheck, showInfo } = useMousePosition();
 
     //gsap
     const modelRef: any = useRef();
@@ -90,7 +90,7 @@ const Canvas3D = forwardRef<IControlRef, IPageProps>((props, ref) => {
           onClick={(e) => {
             if (pathname != modelProps.url) {
               e.stopPropagation();
-
+              showInfo(null, null)
               // look(
               //   modelProps.position[0],
               //   modelProps.position[1],
@@ -107,10 +107,23 @@ const Canvas3D = forwardRef<IControlRef, IPageProps>((props, ref) => {
             e.stopPropagation();
             setHovered(true);
             hovCheck(true);
+            showInfo(modelProps.url?.substring(1, modelProps.url.length).toUpperCase() ?? "-", modelProps.url ?? "--")
+            // setActive(true);
+            // show(modelProps.name, modelProps.url ?? "---", null);
+            // if (title != modelProps.name) {
+            //   show(modelProps.name, modelProps.url ?? "---", null);
+            // }
           }}
           onPointerOut={(e) => {
             setHovered(false);
             hovCheck(false);
+            showInfo(null, null)
+            // setActive(false);
+            // show(null, null, null);
+            // if (title === modelProps.name) {
+            //   console.log("BABI")
+            //   show(null, null, null);
+            // }
           }}
           geometry={nodes[modelProps.name].geometry}
           material={nodes[modelProps.name].material}
@@ -271,8 +284,8 @@ const Canvas3D = forwardRef<IControlRef, IPageProps>((props, ref) => {
         if (cameraControlsRef.current) {
           if (name === null) {
             if (meshRef.current) {
-              setCameraRotation(cameraRotation + 0.005);
-              meshRef.current.rotation.y -= 0.005;
+              setCameraRotation(cameraRotation + 0.0025);
+              meshRef.current.rotation.y -= 0.0025;
             }
             // const rotateX = cameraRotation + 0.005;
             // cameraControlsRef.current.rotateAzimuthTo(
