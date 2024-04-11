@@ -23,11 +23,15 @@ import { gridTypes } from "@/constants";
 import { useCanvasCamera, useProjects } from "@/utilities";
 import ListButtons from "@/components/list-buttons";
 import ProjectContent from "@/components/project-content";
-import { IProjects } from "./interfaces";
+import { IProjects, IProjectsProps } from "./interfaces";
 import { useRouter } from "next/navigation";
 import HomeButton from "@/components/home-button";
+import { collection, getDocs, orderBy, query } from "firebase/firestore";
+import { db } from "@/constants/firebase";
+import { getData } from "./utilities";
 
 gsap.registerPlugin(useGSAP);
+
 function Projects() {
   const appRef: any = useRef();
   const childRef: any = useRef();
@@ -35,16 +39,33 @@ function Projects() {
   //state
 
   // other hooks
-  const { active, activate, mode, switchMode } = useProjects();
+  const { active, activate, mode, switchMode, projects, fetch } = useProjects();
   const { look } = useCanvasCamera();
   const [activeProject, setActiveProject] = useState<IProjects | null>(null);
   const router = useRouter();
   const theme = useTheme();
   const isMd = useMediaQuery(theme.breakpoints.down("md"));
 
+  // funcs
+  // const getData = async () => {
+  //   const projects: any[] = [];
+  //   try {
+  //     const res = await getDocs(
+  //       query(collection(db, "projects"), orderBy("desc"))
+  //     );
+  //     res.forEach((proj) => {
+  //       projects.push(proj.data());
+  //     });
+  //   } catch (e) {
+  //     throw new Error("API FAIL");
+  //   }
+
+  //   return projects;
+  // };
+
   useEffect(() => {
     if (active != null) {
-      const proj = projectList.find((x) => x.title === active);
+      const proj = projects.find((x) => x.title === active);
       if (proj) {
         setActiveProject(proj);
       }
@@ -52,6 +73,14 @@ function Projects() {
       setActiveProject(null);
     }
   }, [active]);
+
+  useEffect(() => {
+    if (projects.length <= 0) {
+      const data = getData().then((x: IProjects[]) => {
+        fetch(x);
+      });
+    }
+  }, []);
 
   return (
     <div
@@ -80,13 +109,13 @@ function Projects() {
             flexDirection: "row",
             justifyContent: "start",
             alignItems: "center",
-            gap: isMd ? "10px" : "20px",
+            gap: "2vw"
           }}
         >
           <HomeButton />
           <Typography
             sx={{
-              fontSize: isMd ? "14px" : "24px",
+              fontSize: isMd ? "2.5vw" : "1.5vw",
               fontWeight: "bold",
             }}
           >
@@ -111,7 +140,7 @@ function Projects() {
               justifyContent: "end",
               alignItems: "center",
               flexDirection: "row",
-              gap: "10px",
+              gap: "1vw",
             }}
           >
             {typeList.map((obj, idx: number) => (
@@ -178,21 +207,23 @@ function Projects() {
                       flexWrap: "wrap",
                       alignItems: "center",
                       flexDirection: "row",
-                      gap: isMd ? "5px": "15px",
+                      gap: isMd ? "5px" : "15px",
                       padding: "5px",
                     }}
                   >
-                    {projectList.map((obj) => (
-                      <GridButtons
-                        key={obj.title}
-                        image={obj.icon}
-                        title={obj.title}
-                        desc={obj.desc}
-                        isLarge={true}
-                        activeComponent={active}
-                        setActive={activate}
-                      />
-                    ))}
+                    <Suspense fallback={null}>
+                      {projects.map((obj) => (
+                        <GridButtons
+                          key={obj.title}
+                          image={obj.icon}
+                          title={obj.title}
+                          desc={obj.desc}
+                          isLarge={true}
+                          activeComponent={active}
+                          setActive={activate}
+                        />
+                      ))}
+                    </Suspense>
                   </div>
                 </div>
               )}
@@ -220,16 +251,18 @@ function Projects() {
                       padding: "5px",
                     }}
                   >
-                    {projectList.map((obj) => (
-                      <ListButtons
-                        key={obj.title}
-                        image={obj.icon}
-                        title={obj.title}
-                        desc={obj.desc}
-                        activeComponent={active}
-                        setActive={activate}
-                      />
-                    ))}
+                    <Suspense fallback={null}>
+                      {projects.map((obj) => (
+                        <ListButtons
+                          key={obj.title}
+                          image={obj.icon}
+                          title={obj.title}
+                          desc={obj.desc}
+                          activeComponent={active}
+                          setActive={activate}
+                        />
+                      ))}
+                    </Suspense>
                   </div>
                 </div>
               )}

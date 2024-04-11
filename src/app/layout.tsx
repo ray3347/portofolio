@@ -22,8 +22,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <link rel="icon" href={`/favicon.svg`} />
-        <Suspense>          
-        {/* <Cursor /> */}
+        <Suspense fallback={null}>          
           <Layout>{children}</Layout>
         </Suspense>
       </body>

@@ -1,5 +1,5 @@
-import { gridTypes } from "@/constants";
-import { ICanvasCameraAction, ICanvasCameraState, IGridAction, IGridState, IMouseMove, IMousePosition } from "@/interfaces";
+import { aboutTypes, gridTypes } from "@/constants";
+import { IAboutAction, IAboutState, ICanvasCameraAction, ICanvasCameraState, IGridAction, IGridState, IMouseMove, IMousePosition, IProjectAction, IProjectState } from "@/interfaces";
 import { create } from "zustand";
 
 export const useMousePosition = create<IMousePosition & IMouseMove>()((set)=>({
@@ -38,7 +38,7 @@ export const useCanvasCamera = create<ICanvasCameraState & ICanvasCameraAction>(
     }))
 }))
 
-export const useProjects =  create<IGridState & IGridAction>()((set)=>({
+export const useProjects =  create<IGridState & IGridAction & IProjectState & IProjectAction>()((set)=>({
     active: null,
     mode: gridTypes.grid,
     activate: (active)=> set(()=>({
@@ -46,5 +46,16 @@ export const useProjects =  create<IGridState & IGridAction>()((set)=>({
     })),
     switchMode: (mode)=> set(()=>({
         mode: mode
+    })),
+    projects: [],
+    fetch: (projects) => set(()=>({
+        projects: projects
+    }))
+}))
+
+export const useAbout = create<IAboutState & IAboutAction>()((set)=>({
+    active: aboutTypes.summary,
+    activate: (active) => set(()=>({
+        active: active
     }))
 }))

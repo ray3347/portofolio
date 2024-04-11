@@ -1,3 +1,4 @@
+import { IRoutes } from "@/interfaces";
 import { Vector3 } from "react-three-fiber";
 
 export interface IProxyCurrentState{
@@ -12,7 +13,7 @@ export interface IModelProps{
     rotation?: any;
     scale?: number;    
     func?: (zoom: boolean) => void;
-    url?: string;
+    url: IRoutes;
 }
 
 export interface IPageProps{

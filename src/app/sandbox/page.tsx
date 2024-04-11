@@ -31,13 +31,13 @@ function Sandbox() {
             flexDirection: "row",
             justifyContent: "start",
             alignItems: "center",
-            gap: "20px",
+            gap: "2vw"
           }}
         >
           <HomeButton />
           <Typography
             sx={{
-              fontSize: isMd ? "14px" : "24px",
+              fontSize: isMd ? "2.5vw" : "1.5vw",
               fontWeight: "bold",
             }}
           >

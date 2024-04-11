@@ -33,10 +33,10 @@ function Layout(props: ILayoutProps) {
 
   const changePos = contextSafe((back: boolean) => {
     if (!back) {
-      gsap.to(".canvas3d", { left: "-50vw", ease: "power1.inOut" });
+      gsap.to(".canvas3d", { left: isMd ? "0" : "-50vw", ease: "power1.inOut" });
       router.push("/");
     } else {
-      gsap.to(".canvas3d", { left: "-80vw", ease: "power1.inOut" });
+      gsap.to(".canvas3d", { left: isMd ? "0" : "-80vw", ease: "power1.inOut" });
     }
   });
 
@@ -57,20 +57,39 @@ function Layout(props: ILayoutProps) {
       if (name !== pathname) {
         const tl = gsap.timeline();
         gsap.to(pageRef.current, { opacity: "100%", duration: 1.5 });
-        tl.to(pageRef.current, {
-          height: "70vh",
-          ease: "expo.inOut",
-          duration: 1,
-        })
-          .to(contentRef.current, {
-            opacity: "100%",
+        if(isMd){
+          tl.to(pageRef.current, {
+            height: "70vh",
+            ease: "expo.inOut",
+            duration: 1,
           })
-          .to(pageRef.current, {
-            boxShadow:
-              "8px 8px 0 rgba(255, 255, 255, 1), 16px 16px 0 rgba(255, 138, 0, 1), 24px 24px 0 rgba(229, 46, 113, 1)",
-            transform: "translate(-24px,-24px)",
-            duration: 0.3,
-          });
+            .to(contentRef.current, {
+              opacity: "100%",
+            })
+            .to(pageRef.current, {
+              boxShadow:
+              "8px -16px 0 rgba(255, 255, 255, 1), 16px 8px 0 rgba(255, 138, 0, 1), -8px -8px 0 rgba(229, 46, 113, 1)",
+              // transform: "none",
+              duration: 0.3,
+            });
+        }
+        else{
+          tl.to(pageRef.current, {
+            height: "70vh",
+            ease: "expo.inOut",
+            duration: 1,
+          })
+            .to(contentRef.current, {
+              opacity: "100%",
+            })
+            .to(pageRef.current, {
+              boxShadow:
+                "8px 8px 0 rgba(255, 255, 255, 1), 16px 16px 0 rgba(255, 138, 0, 1), 24px 24px 0 rgba(229, 46, 113, 1)",
+              transform: "translate(-24px,-24px)",
+              duration: 0.3,
+            });
+        }
+       
       }
     }
   }, [pathname]);
@@ -81,20 +100,39 @@ function Layout(props: ILayoutProps) {
       if (pageRef.current && contentRef.current) {
         const tl = gsap.timeline();
         gsap.to(pageRef.current, { opacity: "100%", duration: 1.5 });
-        tl.to(pageRef.current, {
-          height: isMd ? "80vh": "70vh",
-          ease: "expo.inOut",
-          duration: 1,
-        })
-          .to(contentRef.current, {
-            opacity: "100%",
+        if(isMd){
+          tl.to(pageRef.current, {
+            height: isMd ? "80vh": "70vh",
+            ease: "expo.inOut",
+            duration: 1,
           })
-          .to(pageRef.current, {
-            boxShadow:
-              "8px 8px 0 rgba(255, 255, 255, 1), 16px 16px 0 rgba(255, 138, 0, 1), 24px 24px 0 rgba(229, 46, 113, 1)",
-            transform: "translate(-24px,-24px)",
-            duration: 0.3,
-          });
+            .to(contentRef.current, {
+              opacity: "100%",
+            })
+            .to(pageRef.current, {
+              boxShadow:
+                "8px -16px 0 rgba(255, 255, 255, 1), -16px 16px 0 rgba(255, 138, 0, 1), 16px 8px 0 rgba(229, 46, 113, 1)",
+              // transform: isMd ? "none": "translate(-24px,-24px)",
+              duration: 0.3,
+            });
+        }
+        else{
+          tl.to(pageRef.current, {
+            height: isMd ? "80vh": "70vh",
+            ease: "expo.inOut",
+            duration: 1,
+          })
+            .to(contentRef.current, {
+              opacity: "100%",
+            })
+            .to(pageRef.current, {
+              boxShadow:
+                "8px 8px 0 rgba(255, 255, 255, 1), 16px 16px 0 rgba(255, 138, 0, 1), 24px 24px 0 rgba(229, 46, 113, 1)",
+              transform: isMd ? "none": "translate(-24px,-24px)",
+              duration: 0.3,
+            });
+        }
+       
       }
     }
   }, [pageRef.current || contentRef.current]);
@@ -137,7 +175,7 @@ function Layout(props: ILayoutProps) {
           position: "absolute",
           pointerEvents: "none",
           overflow: "hidden",
-          left: "-50vw",
+          left: isMd ? "0" : "-50vw",
           // maxHeight: "100vh",
           // maxWidth: "100vw"
         }}

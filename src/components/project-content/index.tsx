@@ -3,10 +3,35 @@ import { IContent } from "./interfaces";
 import { Button, useMediaQuery, useTheme } from "@mui/material";
 import GridButtons from "../grid-buttons";
 import ProjectButton from "../project-button";
+import { useEffect, useRef, useState } from "react";
 
 function ProjectContent(props: IContent) {
   const theme = useTheme();
   const isMd = useMediaQuery(theme.breakpoints.down("md"));
+
+  // const [imageLoaded, setImageLoaded] = useState(false);
+  const imageRef: any = useRef();
+
+  // useEffect(() => {
+  //   const observer = new IntersectionObserver((entries) => {
+  //     entries.forEach((entry) => {
+  //       if (entry.isIntersecting) {
+  //         const img = document.createElement('img');
+  //         img.src = props.assets ? props.assets[0] : "/ansel-halim-stg-recede.gif" ;
+  //         img.onload = () => {
+  //           setImageLoaded(true);
+  //         };
+  //         observer.unobserve(entry.target);
+  //       }
+  //     });
+  //   });
+
+  //   observer.observe(imageRef.current);
+
+  //   return () => {
+  //     observer.disconnect();
+  //   };
+  // }, [props.assets]);
 
   return (
     <div
@@ -20,6 +45,7 @@ function ProjectContent(props: IContent) {
       }}
     >
       <div
+        ref={imageRef}
         style={{
           width: "100%",
           height: "30vh",
@@ -51,7 +77,7 @@ function ProjectContent(props: IContent) {
             flexDirection: "row",
             alignItems: "center",
             justifyContent: "space-between",
-            fontSize: isMd ? "18px": "22px",
+            fontSize: isMd ? "18px" : "22px",
             fontWeight: "bold",
             width: "100%",
           }}
@@ -64,14 +90,16 @@ function ProjectContent(props: IContent) {
           >
             Github
           </Button> */}
-          <ProjectButton func={()=>{
-            window.open(props.url)
-          }}/>
+          <ProjectButton
+            func={() => {
+              window.open(props.url);
+            }}
+          />
         </div>
         <div
           style={{
             textAlign: "justify",
-            fontSize: isMd ? "8px": "12px",
+            fontSize: isMd ? "8px" : "12px",
           }}
         >
           <p>{props.story}</p>

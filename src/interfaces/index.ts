@@ -1,3 +1,12 @@
+import { IProjects } from "@/app/projects/interfaces";
+
+// route
+export interface IRoutes{
+  path: string;
+  title: string;
+  description: string;
+}
+
 // mouse pos
 export interface IMousePosition {
   x: number;
@@ -41,4 +50,21 @@ export interface IGridState {
 export interface IGridAction {
   activate: (project: IGridState["active"]) => void;
   switchMode: (mode: IGridState["mode"]) => void;
+}
+
+export interface IProjectState{
+  projects: IProjects[];
+}
+
+export interface IProjectAction {
+  fetch: (obj: IProjectState['projects'])=> void;
+}
+
+// about page
+export interface IAboutState{
+  active: string;
+}
+
+export interface IAboutAction{
+  activate: (obj: IAboutState['active']) => void;
 }

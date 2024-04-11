@@ -6,3 +6,7 @@ export interface IProjects{
     story?:string;
     assets?: string[];
 }
+
+export interface IProjectsProps{
+    projects: IProjects[];
+}

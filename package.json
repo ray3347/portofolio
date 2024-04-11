@@ -17,6 +17,7 @@
     "@react-three/fiber": "^8.16.1",
     "@uidotdev/usehooks": "^2.4.1",
     "dotenv": "^16.4.5",
+    "firebase": "^10.10.0",
     "framer-motion": "^11.0.24",
     "gsap": "^3.12.5",
     "iodash": "^0.0.1-security",

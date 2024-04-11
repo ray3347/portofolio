@@ -88,9 +88,10 @@ const Canvas3D = forwardRef<IControlRef, IPageProps>((props, ref) => {
           rotation={modelProps.rotation}
           scale={modelProps.scale}
           onClick={(e) => {
-            if (pathname != modelProps.url) {
+            if (pathname != modelProps.url.path) {
               e.stopPropagation();
-              showInfo(null, null)
+              showInfo(null, null);
+              hovCheck(false);
               // look(
               //   modelProps.position[0],
               //   modelProps.position[1],
@@ -100,14 +101,14 @@ const Canvas3D = forwardRef<IControlRef, IPageProps>((props, ref) => {
               if (modelProps.func) {
                 modelProps.func(true);
               }
-              router.push(`${modelProps.url ?? "/"}`);
+              router.push(`${modelProps.url.path}`);
             }
           }}
           onPointerOver={(e: ThreeEvent<PointerEvent>) => {
             e.stopPropagation();
             setHovered(true);
             hovCheck(true);
-            showInfo(modelProps.url?.substring(1, modelProps.url.length).toUpperCase() ?? "-", modelProps.url ?? "--")
+            showInfo(modelProps.url.title, modelProps.url.description)
             // setActive(true);
             // show(modelProps.name, modelProps.url ?? "---", null);
             // if (title != modelProps.name) {
@@ -250,7 +251,7 @@ const Canvas3D = forwardRef<IControlRef, IPageProps>((props, ref) => {
           setInitPath(pathname);
           setCurrPath(pathname);
           if (pathname != "/") {
-            const activeObject = objects.find((x) => x.url === pathname);
+            const activeObject = objects.find((x) => x.url.path === pathname);
 
             // console.log("BABAB", activeObject)
             if (activeObject) {
@@ -407,7 +408,7 @@ const Canvas3D = forwardRef<IControlRef, IPageProps>((props, ref) => {
         camera={{ position: [x, y, z], fov: 50 }}
         dpr={[1, 2]}
         style={{
-          width: props.width ?? "200vw",
+          width: props.width ?? isMd ? "100vw" : "200vw",
           // display: "flex",
           zIndex: 0,
           height: props.height ?? "100vh",

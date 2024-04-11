@@ -1,41 +1,42 @@
 import { Vector3 } from "react-three-fiber";
 import { IModelProps } from "../interfaces";
+import { defaultRoute } from "@/constants/routes";
 
 export const objects: IModelProps[] = [
-  {
-    name: "Curly",
-    color: "#B47B82",
-    position: [1, -11, -20],
-    rotation: [2, 0, -0],
-  },
+  // {
+  //   name: "Curly",
+  //   color: "#B47B82",
+  //   position: [1, -11, -20],
+  //   rotation: [2, 0, -0],
+  // },
   {
     name: "DNA",
     color: "#C6878F",
     position: [20, -10, -17],
     rotation: [1, 1, -2],
     scale: 2,
-    url: "/credits"
+    url: defaultRoute.creditsRoute
   },
   {
     name: "Headphones",
     color: "#BF9292",
     position: [20, 2, 4],
     rotation: [2, 0, 1],
-    url: "/about"
+    url: defaultRoute.aboutRoute
   },
   {
     name: "Notebook",
     color: "#B79D94",
     position: [-15, -2, -15],
     rotation: [10, 2, 0],
-    url: "/"
+    url: defaultRoute.homeRoute
   },
   {
     name: "Rocket003",
     color: "#A79A95",
     position: [18, 15, -25],
     rotation: [2, 0, -0],
-    url: "/sandbox"
+    url: defaultRoute.sandboxRoute
   },
   {
     name: "Roundcube001",
@@ -43,7 +44,7 @@ export const objects: IModelProps[] = [
     position: [-25, -4, 5],
     rotation: [1, 10, 0],
     scale: 0.5,
-    url: "/"
+    url: defaultRoute.homeRoute
   },
   {
     name: "Table",
@@ -51,7 +52,7 @@ export const objects: IModelProps[] = [
     position: [1, -4, -28],
     rotation: [1, 0, -1],
     scale: 0.5,
-    url: "/"
+    url: defaultRoute.homeRoute
   },
   {
     name: "VR_Headset",
@@ -59,7 +60,7 @@ export const objects: IModelProps[] = [
     position: [7, -15, 28],
     rotation: [1, 0, -1],
     scale: 5,
-    url: "/projects"
+    url: defaultRoute.projectsRoute
   },
   {
     name: "Zeppelin",
@@ -67,7 +68,7 @@ export const objects: IModelProps[] = [
     position: [-20, 10, 10],
     rotation: [3, -1, 3],
     scale: 0.005,
-    url: "/contacts"
+    url: defaultRoute.contactsRoute
   },
 ];
 

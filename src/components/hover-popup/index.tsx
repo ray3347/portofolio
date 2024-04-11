@@ -7,7 +7,6 @@ function HoverPopup() {
   const { x, y } = useMousePosition();
   const theme = useTheme();
   const isMd = useMediaQuery(theme.breakpoints.down("md"));
-  // const { title, logo, description, active } = useHoverInfo();
   const { title, desc } = useMousePosition();
   const [currTitle, setCurrTitle] = useState<string | null>(null);
 
@@ -18,7 +17,7 @@ function HoverPopup() {
     if (title != currTitle) {
       setCurrTitle(title);
       const tl = gsap.timeline();
-      tl.to(boxRef.current, { width: "20vh", ease: "power3.inOut" });
+      tl.to(boxRef.current, { width: "auto", ease: "power3.inOut" });
     }
   }, [title]);
 
@@ -57,7 +56,7 @@ function HoverPopup() {
             <p
               style={{
                 fontSize: "18px",
-                fontWeight: "bold",
+                fontWeight: "bolder",
                 backgroundImage: "linear-gradient(to right, #ff8a00, #e52e71)",
                 WebkitBackgroundClip: "text",
                 color: "transparent",

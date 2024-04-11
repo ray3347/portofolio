@@ -61,7 +61,7 @@ function GridButtons(props: IGridButtonsProps) {
             "box-shadow 0.3s ease-in-out, background 0.5s ease-in-out, transform 0.3s ease-in-out",
           transform:
             props.title === props.activeComponent
-              ? "translate(-5px, -5px)"
+              ? "translate(-3px, -3px)"
               : hover
               ? "translate(-5px, -5px)"
               : "none",
@@ -110,7 +110,9 @@ function GridButtons(props: IGridButtonsProps) {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          padding: 7,
+          // padding: 7,
+          paddingTop: 7,
+          paddingBottom: 7
         }}
       >
         <p>{props.desc.length > 9 ? props.desc.substring(0,9) + "..." : props.desc}</p>
