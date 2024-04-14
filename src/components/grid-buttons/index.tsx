@@ -32,6 +32,8 @@ function GridButtons(props: IGridButtonsProps) {
 
           props.setActive(props.title);
         }
+        hovCheck(false);
+        setHover(false);
       }}
     >
       <div

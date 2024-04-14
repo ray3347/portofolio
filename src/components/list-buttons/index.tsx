@@ -39,6 +39,8 @@ function ListButtons(props: IListButtonsProps) {
       }}
       onClick={() => {
         props.setActive(props.title);
+        hovCheck(false);
+        setHover(false);
       }}
       style={{
         display: "flex",
@@ -123,7 +125,7 @@ function ListButtons(props: IListButtonsProps) {
           background:
             props.title === props.activeComponent || hover
               // ? "rgba(128, 128, 128, 1)"
-              ? "linear-gradient(to right, #ff8a00, #e52e71)"
+              ? "linear-gradient(to left, #ff8a00, #e52e71)"
               : "rgba(46, 46, 46, 0.8)",
           borderRadius: "1vh",
           padding: "1vw",

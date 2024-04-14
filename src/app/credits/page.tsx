@@ -44,7 +44,7 @@ function Credits() {
               fontWeight: "bold",
             }}
           >
-            SPECIAL THANKS
+            Special Thanks
           </Typography>
         </div>
       </div>

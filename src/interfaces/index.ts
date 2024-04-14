@@ -84,3 +84,13 @@ export interface IContactsState{
 export interface IContactsAction{
   fetch: (obj: IContactsState['socials']) => void;
 }
+
+// home page
+export interface IHomeState{
+  activeTitle: string;
+
+}
+
+export interface IHomeAction{
+  updateTitle: (char: IHomeState['activeTitle']) => void;
+}

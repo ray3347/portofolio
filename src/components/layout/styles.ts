@@ -1,6 +1,6 @@
 export const styles = {
   beforeStyle: {
-    zIndex: -1
+    zIndex: 0
   },
   afterStyle: {
     zIndex: 2,

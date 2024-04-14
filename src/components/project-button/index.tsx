@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { IProjectButtonProps } from "./interfaces";
+import { useMousePosition } from "@/utilities";
 
 function ProjectButton(props: IProjectButtonProps) {
   const [hover, setHover] = useState(false);
+  const { hovCheck } = useMousePosition();
   return (
     <div
       style={{
@@ -17,19 +19,23 @@ function ProjectButton(props: IProjectButtonProps) {
         flexDirection: "row",
         justifyContent: "space-around",
         boxShadow: hover ? "5px 5px 0 rgba(46, 46, 46, 0.6)" : "none",
-        transform: hover
-        ? "translate(-5px, -5px)"
-        : "none",
+        transform: hover ? "translate(-5px, -5px)" : "none",
         transition: "box-shadow 0.3s ease-in-out, transform 0.3s ease-in-out",
-        gap: "5px"
+        gap: "5px",
       }}
       onMouseEnter={() => {
         setHover(true);
+        hovCheck(true);
       }}
       onMouseLeave={() => {
         setHover(false);
+        hovCheck(false);
       }}
-      onClick={props.func}
+      onClick={() => {
+        props.func();
+        setHover(false);
+        hovCheck(false);
+      }}
     >
       <img
         src={"/github-icon.svg"}

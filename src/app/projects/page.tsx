@@ -29,6 +29,7 @@ import HomeButton from "@/components/home-button";
 import { collection, getDocs, orderBy, query } from "firebase/firestore";
 import { db } from "@/constants/firebase";
 import { getData } from "./utilities";
+import Loading from "@/components/loading";
 
 gsap.registerPlugin(useGSAP);
 
@@ -37,6 +38,7 @@ function Projects() {
   const childRef: any = useRef();
 
   //state
+  const [loading, setLoading] = useState(false);
 
   // other hooks
   const { active, activate, mode, switchMode, projects, fetch } = useProjects();
@@ -75,9 +77,13 @@ function Projects() {
   }, [active]);
 
   useEffect(() => {
+    setLoading(false);
     if (projects.length <= 0) {
+      setLoading(true);
       const data = getData().then((x: IProjects[]) => {
         fetch(x);
+
+        setLoading(false);
       });
     }
   }, []);
@@ -109,7 +115,7 @@ function Projects() {
             flexDirection: "row",
             justifyContent: "start",
             alignItems: "center",
-            gap: "2vw"
+            gap: "2vw",
           }}
         >
           <HomeButton />
@@ -119,7 +125,7 @@ function Projects() {
               fontWeight: "bold",
             }}
           >
-            PROJECTS
+            Projects
           </Typography>
         </div>
         {active ? (
@@ -199,32 +205,36 @@ function Projects() {
                     scrollbarWidth: "none",
                   }}
                 >
-                  <div
-                    style={{
-                      width: "90%",
-                      display: "flex",
-                      justifyContent: "space-between",
-                      flexWrap: "wrap",
-                      alignItems: "center",
-                      flexDirection: "row",
-                      gap: isMd ? "5px" : "15px",
-                      padding: "5px",
-                    }}
-                  >
-                    <Suspense fallback={null}>
-                      {projects.map((obj) => (
-                        <GridButtons
-                          key={obj.title}
-                          image={obj.icon}
-                          title={obj.title}
-                          desc={obj.desc}
-                          isLarge={true}
-                          activeComponent={active}
-                          setActive={activate}
-                        />
-                      ))}
-                    </Suspense>
-                  </div>
+                  {loading ? (
+                    <Loading />
+                  ) : (
+                    <div
+                      style={{
+                        width: "90%",
+                        display: "flex",
+                        justifyContent: "space-between",
+                        flexWrap: "wrap",
+                        alignItems: "center",
+                        flexDirection: "row",
+                        gap: isMd ? "5px" : "15px",
+                        padding: "5px",
+                      }}
+                    >
+                      <Suspense fallback={<Loading />}>
+                        {projects.map((obj) => (
+                          <GridButtons
+                            key={obj.title}
+                            image={obj.icon}
+                            title={obj.title}
+                            desc={obj.desc}
+                            isLarge={true}
+                            activeComponent={active}
+                            setActive={activate}
+                          />
+                        ))}
+                      </Suspense>
+                    </div>
+                  )}
                 </div>
               )}
               {mode === gridTypes.list && (
@@ -242,28 +252,32 @@ function Projects() {
                     alignItems: "start",
                   }}
                 >
-                  <div
-                    style={{
-                      width: "90%",
-                      display: "flex",
-                      flexDirection: "column",
-                      gap: "10px",
-                      padding: "5px",
-                    }}
-                  >
-                    <Suspense fallback={null}>
-                      {projects.map((obj) => (
-                        <ListButtons
-                          key={obj.title}
-                          image={obj.icon}
-                          title={obj.title}
-                          desc={obj.desc}
-                          activeComponent={active}
-                          setActive={activate}
-                        />
-                      ))}
-                    </Suspense>
-                  </div>
+                  {loading ? (
+                    <Loading />
+                  ) : (
+                    <div
+                      style={{
+                        width: "90%",
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: "10px",
+                        padding: "5px",
+                      }}
+                    >
+                      <Suspense fallback={<Loading />}>
+                        {projects.map((obj) => (
+                          <ListButtons
+                            key={obj.title}
+                            image={obj.icon}
+                            title={obj.title}
+                            desc={obj.desc}
+                            activeComponent={active}
+                            setActive={activate}
+                          />
+                        ))}
+                      </Suspense>
+                    </div>
+                  )}
                 </div>
               )}
             </>

@@ -8,6 +8,8 @@ import {
   IContactsState,
   IGridAction,
   IGridState,
+  IHomeAction,
+  IHomeState,
   IMouseMove,
   IMousePosition,
   IProjectAction,
@@ -44,7 +46,7 @@ export const useCanvasCamera = create<
 >()((set) => ({
   x: 0,
   y: -10,
-  z: 80,
+  z: 100,
   isZoom: false,
   name: null,
   look: (x, y, z, name) =>
@@ -95,3 +97,10 @@ export const useSocials = create<IContactsState & IContactsAction>()((set) => ({
       socials: socials,
     })),
 }));
+
+export const useHome = create<IHomeState & IHomeAction>()((set)=>({
+  activeTitle: "Website",
+  updateTitle: (activeTitle)=> set(()=>({
+    activeTitle: activeTitle
+  }))
+}))

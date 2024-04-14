@@ -4,10 +4,9 @@ import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 
 function HoverPopup() {
-  const { x, y } = useMousePosition();
+  const { x, y, title, desc } = useMousePosition();
   const theme = useTheme();
   const isMd = useMediaQuery(theme.breakpoints.down("md"));
-  const { title, desc } = useMousePosition();
   const [currTitle, setCurrTitle] = useState<string | null>(null);
 
   const boxRef: any = useRef();
@@ -17,7 +16,9 @@ function HoverPopup() {
     if (title != currTitle) {
       setCurrTitle(title);
       const tl = gsap.timeline();
-      tl.to(boxRef.current, { width: "auto", ease: "power3.inOut" });
+      if (boxRef.current) {
+        tl.to(boxRef.current, { width: "auto", ease: "power3.inOut" });
+      }
     }
   }, [title]);
 
@@ -33,7 +34,7 @@ function HoverPopup() {
             boxShadow: "0 0 10px rgba(229, 46, 113, 0.5)",
             background: "#0C090A",
             position: "fixed",
-            top: `${y - 85}px`,
+            top: `${y - 82}px`,
             left: `${x + 3}px`,
             pointerEvents: "none",
             zIndex: 9999,
@@ -53,24 +54,29 @@ function HoverPopup() {
               textAlign: "left",
             }}
           >
-            <p
-              style={{
-                fontSize: "18px",
-                fontWeight: "bolder",
-                backgroundImage: "linear-gradient(to right, #ff8a00, #e52e71)",
-                WebkitBackgroundClip: "text",
-                color: "transparent",
-              }}
-            >
-              {title ?? "TEST"}
-            </p>
-            <p
-              style={{
-                fontSize: "12px",
-              }}
-            >
-              {desc ?? "/"}
-            </p>
+            {title && (
+              <p
+                style={{
+                  fontSize: "18px",
+                  fontWeight: "bolder",
+                  backgroundImage:
+                    "linear-gradient(to right, #ff8a00, #e52e71)",
+                  WebkitBackgroundClip: "text",
+                  color: "transparent",
+                }}
+              >
+                {title}
+              </p>
+            )}
+            {desc && (
+              <p
+                style={{
+                  fontSize: "12px",
+                }}
+              >
+                {desc}
+              </p>
+            )}
           </div>
         </div>
       )}

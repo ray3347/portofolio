@@ -1,5 +1,5 @@
 "use client";
-import { Canvas, ThreeEvent, useFrame } from "@react-three/fiber";
+import { Canvas, ThreeEvent, useFrame, useLoader } from "@react-three/fiber";
 import {
   IControlProps,
   IControlRef,
@@ -19,6 +19,8 @@ import {
   CameraControls,
   ContactShadows,
   GradientTexture,
+  MeshRefractionMaterial,
+  MeshTransmissionMaterial,
   OrbitControls,
   TransformControls,
   useCursor,
@@ -35,6 +37,17 @@ import { usePathname, useRouter } from "next/navigation";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { useMediaQuery, useTheme } from "@mui/material";
+import Loading from "../loading";
+import { RGBELoader } from "three-stdlib";
+import {
+  Bloom,
+  BrightnessContrast,
+  EffectComposer,
+  HueSaturation,
+  LUT,
+  SelectiveBloom,
+  ToneMapping,
+} from "@react-three/postprocessing";
 
 gsap.registerPlugin(useGSAP);
 
@@ -43,13 +56,6 @@ const Canvas3D = forwardRef<IControlRef, IPageProps>((props, ref) => {
 
   //zustand
   const { x, y, z, look, isZoom, zoom, name } = useCanvasCamera();
-
-  // snapshot
-  // const state = proxy<IProxyCurrentState>({
-  //   current: null,
-  //   position: [0, 0, 0],
-  // });
-
   // other hooks
   const controlsRef: any = useRef();
   const router = useRouter();
@@ -57,21 +63,18 @@ const Canvas3D = forwardRef<IControlRef, IPageProps>((props, ref) => {
   const [initPath, setInitPath] = useState("");
   const [currPath, setCurrPath] = useState("/");
 
-  const [autoRotateEnabled, setAutoRotateEnabled] = useState(true);
   const theme = useTheme();
   const isMd = useMediaQuery(theme.breakpoints.down("md"));
 
   const Model = (modelProps: IModelProps) => {
-    // dev
-    // const { nodes }: any = useGLTF(`${process.env.URL_DEV}/compressed.glb`);
-
-    // prod
-    const { nodes }: any = useGLTF(`/compressed.glb`);
+    const { nodes }: any = useGLTF(`/route_objects.glb`);
+    const texture = useLoader(RGBELoader, "/active_texture.hdr");
 
     // const snap = useSnapshot(state);
     const [hovered, setHovered] = useState(false);
     useCursor(hovered);
     const { hovCheck, showInfo } = useMousePosition();
+    const [opa, setOpa] = useState(0);
 
     //gsap
     const modelRef: any = useRef();
@@ -92,12 +95,6 @@ const Canvas3D = forwardRef<IControlRef, IPageProps>((props, ref) => {
               e.stopPropagation();
               showInfo(null, null);
               hovCheck(false);
-              // look(
-              //   modelProps.position[0],
-              //   modelProps.position[1],
-              //   modelProps.position[2],
-              //   modelProps.name
-              // );
               if (modelProps.func) {
                 modelProps.func(true);
               }
@@ -108,46 +105,41 @@ const Canvas3D = forwardRef<IControlRef, IPageProps>((props, ref) => {
             e.stopPropagation();
             setHovered(true);
             hovCheck(true);
-            showInfo(modelProps.url.title, modelProps.url.description)
-            // setActive(true);
-            // show(modelProps.name, modelProps.url ?? "---", null);
-            // if (title != modelProps.name) {
-            //   show(modelProps.name, modelProps.url ?? "---", null);
-            // }
+            showInfo(modelProps.url.title, modelProps.url.description);
           }}
           onPointerOut={(e) => {
             setHovered(false);
             hovCheck(false);
-            showInfo(null, null)
-            // setActive(false);
-            // show(null, null, null);
-            // if (title === modelProps.name) {
-            //   console.log("BABI")
-            //   show(null, null, null);
-            // }
+            showInfo(null, null);
           }}
           geometry={nodes[modelProps.name].geometry}
-          material={nodes[modelProps.name].material}
-          material-color={
-            name === modelProps.name || hovered ? modelProps.color : "white"
-            // state.current === modelProps.name || hovered
-            //   ? modelProps.color
-            //   : "white"
-          }
           castShadow={true}
           receiveShadow={true}
         >
-          {/* <GradientTexture
-            stops={[0, 0.8]} // As many stops as you want
-            colors={[modelProps.color, '#e52e71']} // Colors need to match the number of stops
-            size={100} // Size is optional, default = 1024
-          /> */}
+          {name === modelProps.name ? (
+            <MeshRefractionMaterial
+              color={
+                name === modelProps.name || hovered ? modelProps.color : "white"
+              }
+              envMap={texture}
+              bounces={2}
+            />
+          ) : (
+            <meshStandardMaterial
+              roughness={0}
+              metalness={0}
+              color={
+                name === modelProps.name || hovered ? modelProps.color : "white"
+              }
+              emissiveIntensity={0}
+              emissive={"white"}
+            />
+          )}
         </mesh>
 
         {name === modelProps.name && (
           <>
-            {/* <OrbitControls autoRotate={true} /> */}
-            <pointLight
+            {/* <pointLight
               position={[
                 modelProps.position[0] + 5,
                 modelProps.position[1],
@@ -170,15 +162,24 @@ const Canvas3D = forwardRef<IControlRef, IPageProps>((props, ref) => {
                 modelProps.position[2] + 5,
               ]}
               intensity={50}
-            />
-            <pointLight
+            /> */}
+            {/* <pointLight
               position={[
                 modelProps.position[0] + 5,
                 modelProps.position[1] + 5,
                 modelProps.position[2] + 5,
               ]}
               intensity={50}
-            />
+            /> */}
+            {/* <EffectComposer enableNormalPass={false} >
+               <Bloom
+                  mipmapBlur
+                  luminanceThreshold={0.9}
+                  luminanceSmoothing={0.025}
+                  intensity={2}
+                />
+              <ToneMapping mode={THREE.ACESFilmicToneMapping} /> 
+            </EffectComposer> */}
           </>
         )}
       </>
@@ -190,10 +191,9 @@ const Canvas3D = forwardRef<IControlRef, IPageProps>((props, ref) => {
       const cameraControlsRef: any = useRef();
       const meshRef: any = useRef();
       const [cameraRotation, setCameraRotation] = useState<any>(0);
-      // const [isZoom, setIsZoom] = useState<boolean | undefined>(undefined);
 
       const handleReset = () => {
-        look(0, -10, 80, null);
+        look(0, -10, 100, null);
         if (controlProps.func) {
           controlProps.func(false);
           // setIsZoom(false);
@@ -210,26 +210,19 @@ const Canvas3D = forwardRef<IControlRef, IPageProps>((props, ref) => {
         if (
           !approxEquals(x, 0) ||
           !approxEquals(y, -10) ||
-          !approxEquals(z, 80)
+          !approxEquals(z, 100)
         ) {
           cameraControlsRef.current?.setLookAt(
             x * 3,
             y < 0 ? -10 : y * 3,
-            z * 3,
+            Math.abs(z) < 30 ? z * 4 : z * 2,
             x,
             y + 5,
             z,
             true
           );
           cameraControlsRef.current?.zoomTo(1.2, true);
-
-          // if (pathname != "/") {
-          //   cameraControlsRef.current?.zoomTo(1.2, true);
-          // } else {
-          //   // cameraControlsRef.current?.zoomTo(3, true);
-          // }
         } else {
-          // cameraControlsRef.current?.rotateTo(0,0, true)
           if (initPath !== "") {
             cameraControlsRef.current?.setLookAt(x, y, z, 0, 0, 0, true);
             if (isMd) {
@@ -239,21 +232,17 @@ const Canvas3D = forwardRef<IControlRef, IPageProps>((props, ref) => {
             }
             cameraControlsRef.current.rotate(0, 0, true);
           }
-
-          // setAutoRotateEnabled(true);
         }
       }, [x || y || z]);
 
       useEffect(() => {
-        // console.log("BABI22", initPath, currPath, pathname);
         if (currPath != pathname) {
-          // console.log("BABI23");
           setInitPath(pathname);
           setCurrPath(pathname);
           if (pathname != "/") {
-            const activeObject = objects.find((x) => x.url.path === pathname);
-
-            // console.log("BABAB", activeObject)
+            const activeObject = objects.find((x) =>
+              pathname.includes(x.url.path)
+            );
             if (activeObject) {
               if (props.callback) {
                 props.callback(true);
@@ -266,7 +255,6 @@ const Canvas3D = forwardRef<IControlRef, IPageProps>((props, ref) => {
               );
             }
           } else {
-            // console.log("BABI")
             handleReset();
           }
         } else if (initPath === "") {
@@ -276,11 +264,6 @@ const Canvas3D = forwardRef<IControlRef, IPageProps>((props, ref) => {
         }
       }, [pathname]);
 
-      // useEffect(() => {
-      //   // console.log("BABI", cameraControlsRef.current);
-      //   setCameraRotation(cameraRotation + 0.0001);
-      // }, []);
-
       useFrame(() => {
         if (cameraControlsRef.current) {
           if (name === null) {
@@ -288,45 +271,9 @@ const Canvas3D = forwardRef<IControlRef, IPageProps>((props, ref) => {
               setCameraRotation(cameraRotation + 0.0025);
               meshRef.current.rotation.y -= 0.0025;
             }
-            // const rotateX = cameraRotation + 0.005;
-            // cameraControlsRef.current.rotateAzimuthTo(
-            //   (cameraRotation + 0.005),
-            //   true
-            // );
-            // setCameraRotation(rotateX);
-            // setCameraRotation([0,cameraRotation[1]-0.01,0]);
-            // console.log(cameraControlsRef)
           }
         }
       });
-
-      // useEffect(()=>{
-      //   if (cameraControlsRef.current) {
-      //     if (name === null) {
-      //       // if (meshRef.current) {
-      //       //   setCameraRotation(cameraRotation+0.01);
-      //       //   meshRef.current.rotation.y -= 0.01;
-      //       // }
-      //       const rotateX = cameraRotation + 0.0001;
-      //       cameraControlsRef.current.rotateAzimuthTo(
-      //         (cameraRotation + 0.0001),
-      //         true
-      //       );
-      //       setCameraRotation(rotateX);
-      //       // setCameraRotation([0,cameraRotation[1]-0.01,0]);
-      //       // console.log(cameraControlsRef)
-      //     }
-      //   }
-      // },[cameraRotation])
-
-      // useEffect(()=>{
-      //   const timeoutId = setTimeout(() => {
-      //     setAutoRotateEnabled(true)
-      //   }, 2000);
-
-      //   // Cleanup function to clear the timeout if the component unmounts
-      //   return () => clearTimeout(timeoutId);
-      // },[autoRotateEnabled])
 
       return (
         <>
@@ -356,14 +303,7 @@ const Canvas3D = forwardRef<IControlRef, IPageProps>((props, ref) => {
                       if (e != null) {
                         if (controlProps.func) {
                           controlProps.func(e);
-                          // cameraControlsRef.current.rotateAzimuthTo(
-                          //   cameraRotation,
-                          //   false
-                          // );
                           if (meshRef.current) {
-                            // setCameraRotation(cameraRotation + 0.005);
-                            // meshRef.current.rotation.y = 0;
-
                             cameraControlsRef.current.position = [
                               x,
                               meshRef.current.rotation.y,
@@ -375,6 +315,7 @@ const Canvas3D = forwardRef<IControlRef, IPageProps>((props, ref) => {
                     }}
                   />
                 ))}
+
               <ContactShadows
                 rotation-x={Math.PI / 2}
                 position={[0, -35, 0]}
@@ -397,13 +338,8 @@ const Canvas3D = forwardRef<IControlRef, IPageProps>((props, ref) => {
     },
   }));
 
-  // useEffect(() => {
-  //   state.current = null;
-  //   state.position = [0, -10, 80];
-  // }, []);
-
   return (
-    <Suspense>
+    <Suspense fallback={<Loading />}>
       <Canvas
         camera={{ position: [x, y, z], fov: 50 }}
         dpr={[1, 2]}
@@ -414,17 +350,18 @@ const Canvas3D = forwardRef<IControlRef, IPageProps>((props, ref) => {
           height: props.height ?? "100vh",
         }}
       >
-        {/* <pointLight position={[0,0,0]} intensity={50} />
-        <directionalLight position={[0,0,0]} intensity={50}/> */}
-        <pointLight position={[100, 100, 100]} intensity={0.7} />
         <hemisphereLight
-          color="#FF407D"
-          groundColor="#ffffff"
-          // position={[-7, 25, 13]}
-          position={[0, 0.8, 0]}
-          intensity={0.7}
+          color="#FF69B4"
+          groundColor="black"
+          position={[0, -0.8, 0]}
+          intensity={0.5}
         />
-        {/* <ambientLight intensity={2} /> */}
+        <directionalLight intensity={2} position={[0, 1, 0]} color={"cyan"} />
+        <directionalLight
+          intensity={2}
+          position={[-1, 0, 1]}
+          color={"#ff8a00"}
+        />
         <Controls
           func={(e) => {
             if (e != null) {

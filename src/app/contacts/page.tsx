@@ -2,23 +2,26 @@
 import HomeButton from "@/components/home-button";
 import { useMousePosition, useSocials } from "@/utilities";
 import { Typography, useMediaQuery, useTheme } from "@mui/material";
-import { Suspense, useEffect } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { fetchSocials } from "./utilities";
 import { ISocials } from "@/interfaces";
 import GridButtons from "@/components/grid-buttons";
+import Loading from "@/components/loading";
 
 function Contacts() {
   const theme = useTheme();
   const isMd = useMediaQuery(theme.breakpoints.down("md"));
   const { socials, fetch } = useSocials();
   const { hovCheck } = useMousePosition();
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    setLoading(false);
     if (socials.length <= 0) {
+      setLoading(true);
       const data = fetchSocials().then((x: ISocials[]) => {
         fetch(x);
-
-        console.log(x);
+        setLoading(false);
       });
     }
   }, []);
@@ -61,7 +64,7 @@ function Contacts() {
               fontWeight: "bold",
             }}
           >
-            SOCIAL MEDIA
+            Social Media
           </Typography>
         </div>
       </div>
@@ -81,7 +84,7 @@ function Contacts() {
             fontSize: isMd ? "1.7vw" : "0.7vw",
           }}
         >
-          For business inquiries, or if you just want to chat about stuffs, feel
+          For business inquiries, or if you just want to chat, feel
           free to contact me on my socials listed below!
         </Typography>
         <div
@@ -95,39 +98,43 @@ function Contacts() {
             gap: "10px",
           }}
         >
-          <Suspense fallback={null}>
-            {socials.map((soc) => (
-              <div
-                key={soc.type}
-                style={{
-                  display: "flex",
-                  flexDirection: "row",
-                  alignItems: "center",
-                  justifyContent: "start",
-                  gap: "10px",
-                }}
-              >
-                <GridButtons
-                  image={soc.icon}
-                  desc={null}
-                  isLarge={false}
-                  title={soc.type}
-                  setActive={(e) => {
-                    if (soc.url) {
-                      window.open(soc.url);
-                    }
-                  }}
-                />
-                <Typography
-                  sx={{
-                    fontSize: isMd ? "1.7vw" : "0.7vw",
+          {loading ? (
+            <Loading />
+          ) : (
+            <>
+              {socials.map((soc) => (
+                <div
+                  key={soc.type}
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "start",
+                    gap: "10px",
                   }}
                 >
-                  {soc.id}
-                </Typography>
-              </div>
-            ))}
-          </Suspense>
+                  <GridButtons
+                    image={soc.icon}
+                    desc={null}
+                    isLarge={false}
+                    title={soc.type}
+                    setActive={(e) => {
+                      if (soc.url) {
+                        window.open(soc.url);
+                      }
+                    }}
+                  />
+                  <Typography
+                    sx={{
+                      fontSize: isMd ? "1.7vw" : "0.7vw",
+                    }}
+                  >
+                    {soc.id}
+                  </Typography>
+                </div>
+              ))}
+            </>
+          )}
         </div>
       </div>
       {/* <Typography sx={{

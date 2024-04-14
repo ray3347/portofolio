@@ -3,7 +3,8 @@ import { IContent } from "./interfaces";
 import { Button, useMediaQuery, useTheme } from "@mui/material";
 import GridButtons from "../grid-buttons";
 import ProjectButton from "../project-button";
-import { useEffect, useRef, useState } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
+import Loading from "../loading";
 
 function ProjectContent(props: IContent) {
   const theme = useTheme();
@@ -44,24 +45,26 @@ function ProjectContent(props: IContent) {
         alignItems: "start",
       }}
     >
-      <div
-        ref={imageRef}
-        style={{
-          width: "100%",
-          height: "30vh",
-          backgroundImage: `url(${
-            props.assets ? props.assets[0] : "/ansel-halim-stg-recede.gif"
-          })`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-        }}
-      >
-        {/* <img
+      <Suspense fallback={<Loading />}>
+        <div
+          ref={imageRef}
+          style={{
+            width: "100%",
+            height: "30vh",
+            backgroundImage: `url(${
+              props.assets ? props.assets[0] : "/ansel-halim-stg-recede.gif"
+            })`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+          }}
+        />
+      </Suspense>
+      {/* <img
           src={props.assets ? props.assets[0] : "/ansel-halim-stg-recede.gif"}
           alt="/ansel-halim-stg-recede.gif"
           width= "100%"
+          loading="lazy"
         /> */}
-      </div>
       <div
         style={{
           display: "flex",
@@ -83,13 +86,6 @@ function ProjectContent(props: IContent) {
           }}
         >
           <p>{props.title}</p>
-          {/* <Button
-            onClick={() => {
-              window.open(props.url);
-            }}
-          >
-            Github
-          </Button> */}
           <ProjectButton
             func={() => {
               window.open(props.url);
