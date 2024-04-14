@@ -44,7 +44,7 @@ function About() {
           <HomeButton />
           <Typography
             sx={{
-              fontSize: isMd ? "2.5vw" : "1.5vw",
+              fontSize: isMd ? "3vw" : "1.5vw",
               fontWeight: "bold",
             }}
           >
@@ -100,7 +100,7 @@ function About() {
                 flexDirection: "row",
                 justifyContent: "start",
                 alignItems: "center",
-                gap: "10px",
+                gap: isMd ? "5px" : "10px",
               }}
             >
               {aboutContent.map((obj) => (
@@ -122,15 +122,15 @@ function About() {
                   style={{
                     display: "flex",
                     flexDirection: "row",
-                    gap: "5px",
+                    gap: isMd ? "2.5px" : "5px",
                     alignItems: "center",
                     justifyContent: "center",
                   }}
                 >
                   <>{isMd ? "CV" : "Download CV"}</>
                   <svg
-                    width="15"
-                    height="14"
+                    width={isMd ? "10" : "15"}
+                    height={isMd ? "9" : "14"}
                     viewBox="0 0 17 16"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
@@ -158,7 +158,7 @@ function About() {
               gap: "10px",
               overflow: "auto",
               scrollbarWidth: "thin",
-              fontSize: isMd ? "1.7vw" : "0.7vw",
+              fontSize: isMd ? "2vw" : "0.7vw",
               color: "white",
               textAlign: "justify",
               paddingRight: isMd ? "1.7vw" : "0.7vw",
@@ -166,7 +166,7 @@ function About() {
           >
             <Typography
               sx={{
-                fontSize: isMd ? "2.5vw" : "1.5vw",
+                fontSize: isMd ? "3vw" : "1.5vw",
                 backgroundImage: "linear-gradient(to left, #ff8a00, #e52e71)",
                 WebkitBackgroundClip: "text",
                 color: "transparent",

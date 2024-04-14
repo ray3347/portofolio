@@ -89,7 +89,7 @@ function WordButton(props: IWordButtonProps) {
       >
         <div
           style={{
-            fontSize: isMd ? "8px" : "12px",
+            fontSize: isMd ? "2vw" : "12px",
           }}
         >
           {props.content}

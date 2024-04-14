@@ -80,7 +80,7 @@ function ProjectContent(props: IContent) {
             flexDirection: "row",
             alignItems: "center",
             justifyContent: "space-between",
-            fontSize: isMd ? "18px" : "22px",
+            fontSize: isMd ? "14px" : "22px",
             fontWeight: "bold",
             width: "100%",
           }}

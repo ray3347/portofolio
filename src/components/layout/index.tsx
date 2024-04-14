@@ -225,7 +225,7 @@ function Layout(props: ILayoutProps) {
                 ref={pageRef}
                 style={{
                   position: "absolute",
-                  padding: "4vh",
+                  padding: isMd ? "2vh" : "4vh",
                   width: isMd ? "80vw" : "40vw",
                   height: "0vh",
                   opacity: "0%",

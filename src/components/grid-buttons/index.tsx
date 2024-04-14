@@ -45,7 +45,7 @@ function GridButtons(props: IGridButtonsProps) {
               ? "linear-gradient(to right, #ff8a00, #e52e71)"
               : props.background ?? "rgba(46, 46, 46, 0.8)",
           borderRadius: props.isLarge ? "2.5vh" : "1.5vh",
-          padding: props.isLarge ? isMd ? "2.8vh" : "3vh" : isMd ? "1.5vh" : "2vh",
+          padding: props.isLarge ? isMd ? "3vh" : "3vh" : isMd ? "2vh" : "2vh",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
@@ -72,8 +72,8 @@ function GridButtons(props: IGridButtonsProps) {
         <img
           src={props.image}
           style={{
-            width: props.isLarge ? isMd ? "2vh" :"3vh" : isMd ? "1vh" :"2vh",
-            height: props.isLarge ? isMd ? "2vh" :"3vh" : isMd ? "1vh" :"2vh",
+            width: props.isLarge ? isMd ? "3vh" :"3vh" : isMd ? "2vh" :"2vh",
+            height: props.isLarge ? isMd ? "3vh" :"3vh" : isMd ? "2vh" :"2vh",
             // top: "50%",
             // left: "50%",
             // transform: "translate(-50%, -50%)",

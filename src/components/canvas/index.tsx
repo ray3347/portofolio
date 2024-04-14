@@ -154,7 +154,7 @@ const Canvas3D = forwardRef<IControlRef, IPageProps>((props, ref) => {
             reflectivity={0.2}
             ior={0.9}
           /> */}
-          {name === modelProps.name ? (
+          {(name === modelProps.name && !isMd) ? (
             <MeshRefractionMaterial
               color={
                 name === modelProps.name || hovered ? modelProps.color : "white"

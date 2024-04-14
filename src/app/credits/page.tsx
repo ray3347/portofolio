@@ -40,7 +40,7 @@ function Credits() {
           <HomeButton />
           <Typography
             sx={{
-              fontSize: isMd ? "2.5vw" : "1.5vw",
+              fontSize: isMd ? "3vw" : "1.5vw",
               fontWeight: "bold",
             }}
           >

@@ -60,7 +60,8 @@ function Contacts() {
           <HomeButton />
           <Typography
             sx={{
-              fontSize: isMd ? "2.5vw" : "1.5vw",
+              // fontSize: isMd ? "2.5vw" : "1.5vw",
+              fontSize: isMd ? "3vw" : "1.5vw",
               fontWeight: "bold",
             }}
           >
@@ -81,7 +82,7 @@ function Contacts() {
       >
         <Typography
           sx={{
-            fontSize: isMd ? "1.7vw" : "0.7vw",
+            fontSize: isMd ? "2vw" : "0.7vw",
           }}
         >
           For business inquiries, or if you just want to chat, feel
@@ -126,7 +127,7 @@ function Contacts() {
                   />
                   <Typography
                     sx={{
-                      fontSize: isMd ? "1.7vw" : "0.7vw",
+                      fontSize: isMd ? "2vw" : "0.7vw",
                     }}
                   >
                     {soc.id}

@@ -58,13 +58,13 @@ function ListButtons(props: IListButtonsProps) {
               ? "linear-gradient(to right, #ff8a00, #e52e71)"
               : "rgba(46, 46, 46, 0.8)",
           borderRadius: "1.5vh",
-          padding: "2vh",
+          // padding: "2vh",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
           flexDirection: "row",
-          // width: "6vh",
-          height: isMd ? "5vh" : "6vh",
+          width: isMd ? "7vh" : "7vh",
+          height: isMd ? "6vh" : "6vh",
           boxShadow:
             props.title === props.activeComponent
               ? "5px 5px 0 rgba(128, 128, 128, 0.5)"
@@ -87,13 +87,12 @@ function ListButtons(props: IListButtonsProps) {
         <img
           src={props.image}
           style={{
-            margin: "auto",
-            width: isMd ? "1.3vh" : "2vh",
-            height: isMd ? "1.3vh" : "2vh",
-            // top: "50%",
-            // left: "50%",
-            // transform: "translate(-50%, -50%)",
-            // position: "absolute",
+            width: isMd ? "2vh" : "2vh",
+            height: isMd ? "2vh" : "2vh",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            position: "absolute",
           }}
         />
         {/* <div  style={{
@@ -141,7 +140,7 @@ function ListButtons(props: IListButtonsProps) {
               : "none",
           position: "relative",
           width: "100%",
-          height: isMd ? "5vh" : "6vh",
+          height: isMd ? "6vh" : "6vh",
           transition:
             "box-shadow 0.3s ease-in-out, background-color 1s ease-out, transform 0.3s ease-in-out",
           transform:
