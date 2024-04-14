@@ -198,7 +198,7 @@ function About() {
                       <>
                         {obj.subContentList.map((list) => (
                           <>
-                            <li>{list}</li>
+                            <li key={list}>{list}</li>
                           </>
                         ))}
                         <br/><br/>

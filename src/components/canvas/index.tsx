@@ -19,6 +19,7 @@ import {
   CameraControls,
   ContactShadows,
   GradientTexture,
+  MeshReflectorMaterial,
   MeshRefractionMaterial,
   MeshTransmissionMaterial,
   OrbitControls,
@@ -42,12 +43,14 @@ import { RGBELoader } from "three-stdlib";
 import {
   Bloom,
   BrightnessContrast,
+  DepthOfField,
   EffectComposer,
   HueSaturation,
   LUT,
   SelectiveBloom,
   ToneMapping,
 } from "@react-three/postprocessing";
+import { GainMapLoader, HDRJPGLoader } from "@monogrid/gainmap-js";
 
 gsap.registerPlugin(useGSAP);
 
@@ -68,7 +71,7 @@ const Canvas3D = forwardRef<IControlRef, IPageProps>((props, ref) => {
 
   const Model = (modelProps: IModelProps) => {
     const { nodes }: any = useGLTF(`/route_objects.glb`);
-    const texture = useLoader(RGBELoader, "/active_texture.hdr");
+    const texture = useLoader(RGBELoader, "/active_texture_mini.hdr");
 
     // const snap = useSnapshot(state);
     const [hovered, setHovered] = useState(false);
@@ -116,6 +119,41 @@ const Canvas3D = forwardRef<IControlRef, IPageProps>((props, ref) => {
           castShadow={true}
           receiveShadow={true}
         >
+          {/* <meshStandardMaterial
+            roughness={0}
+            metalness={0}
+            color={
+              name === modelProps.name || hovered ? modelProps.color : "white"
+            }
+            emissiveIntensity={0}
+            emissive={"white"}
+          /> */}
+          {/* <MeshReflectorMaterial
+            mirror={0.2}
+            roughness={0}
+            metalness={0}
+            color={
+              name === modelProps.name || hovered ? modelProps.color : "white"
+            }
+            emissiveIntensity={0}
+            emissive={"white"}
+          /> */}
+          {/* <meshPhysicalMaterial
+            roughness={0}
+            metalness={0}
+            color={
+              name === modelProps.name || hovered ? modelProps.color : "white"
+            }
+            emissiveIntensity={0}
+            emissive={"white"}
+            envMapIntensity={0.9}
+            clearcoat={1}
+            transparent={false}
+            // transmission={ .95}
+            opacity={1}
+            reflectivity={0.2}
+            ior={0.9}
+          /> */}
           {name === modelProps.name ? (
             <MeshRefractionMaterial
               color={
@@ -165,20 +203,27 @@ const Canvas3D = forwardRef<IControlRef, IPageProps>((props, ref) => {
             /> */}
             {/* <pointLight
               position={[
-                modelProps.position[0] + 5,
-                modelProps.position[1] + 5,
-                modelProps.position[2] + 5,
+                modelProps.position[0],
+                modelProps.position[1],
+                modelProps.position[2] + 15,
+                // modelProps.position[0] * 3,
+                // modelProps.position[1] < 0 ? -10 : modelProps.position[1] * 3,
+                // Math.abs(modelProps.position[2]) < 30
+                //   ? modelProps.position[2] * 4
+                //   : modelProps.position[2] * 2,
               ]}
-              intensity={50}
+              intensity={500}
             /> */}
-            {/* <EffectComposer enableNormalPass={false} >
-               <Bloom
-                  mipmapBlur
-                  luminanceThreshold={0.9}
-                  luminanceSmoothing={0.025}
-                  intensity={2}
-                />
-              <ToneMapping mode={THREE.ACESFilmicToneMapping} /> 
+            {/* <EffectComposer>
+              <Bloom
+                mipmapBlur
+                luminanceThreshold={0}
+                luminanceSmoothing={0.9}
+                intensity={1}
+                height={300}
+                width={1000}
+              />
+              <ToneMapping mode={THREE.ACESFilmicToneMapping} />
             </EffectComposer> */}
           </>
         )}
@@ -337,6 +382,20 @@ const Canvas3D = forwardRef<IControlRef, IPageProps>((props, ref) => {
       controlsRef.current?.func();
     },
   }));
+
+  // useEffect(()=>{
+  //   const renderer = new THREE.WebGLRenderer();
+
+  //   const loader = new GainMapLoader(renderer);
+
+  //   const result = loader.loadAsync(['/active_texture_2.jpg', '/active_texture_2-gainmap.jpg', '/active_texture_2.json']).then((x)=>{
+  //     console.log(x)
+  //     let hdr = x.renderTarget.textures[0];
+  //     hdr.mapping = THREE.EquirectangularReflectionMapping;
+  //     hdr.needsUpdate = true;
+  //     setActiveTexture(hdr);
+  //   });
+  // },[])
 
   return (
     <Suspense fallback={<Loading />}>

@@ -12,6 +12,7 @@
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
     "@gsap/react": "^2.1.0",
+    "@monogrid/gainmap-js": "^3.0.5",
     "@mui/material": "^5.15.14",
     "@react-three/drei": "^9.103.0",
     "@react-three/fiber": "^8.16.1",
